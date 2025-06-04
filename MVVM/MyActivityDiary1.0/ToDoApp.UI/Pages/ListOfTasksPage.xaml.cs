@@ -19,7 +19,7 @@ namespace ToDoApp.UI.Pages
     /// <summary>
     /// Interaction logic for ListOfTasksPage.xaml
     /// </summary>
-    public partial class ListOfTasksPage : UserControl// bylo page
+    public partial class ListOfTasksPage : UserControl
     {
         public ListOfTasksPage()
         {

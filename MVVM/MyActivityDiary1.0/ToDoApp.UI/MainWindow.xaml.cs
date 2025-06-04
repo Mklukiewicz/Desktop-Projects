@@ -18,8 +18,6 @@ namespace ToDoApp.UI
     /// </summary>
     public partial class MainWindow : Window
     {
-        private ObservableCollection<MainViewModel> mainViewModelList = new ObservableCollection<MainViewModel>();
-
         public MainWindow()
         {
             InitializeComponent();
