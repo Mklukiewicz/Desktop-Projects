@@ -1,0 +1,50 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v8.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v8.0": {
+      "ToDoApp.UI/1.0.0": {
+        "dependencies": {
+          "ToDoApp.Core": "1.0.0",
+          "ToDoApp.DB": "1.0.0"
+        },
+        "runtime": {
+          "ToDoApp.UI.dll": {}
+        }
+      },
+      "ToDoApp.Core/1.0.0": {
+        "runtime": {
+          "ToDoApp.Core.dll": {}
+        }
+      },
+      "ToDoApp.DB/1.0.0": {
+        "dependencies": {
+          "ToDoApp.Core": "1.0.0"
+        },
+        "runtime": {
+          "ToDoApp.DB.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "ToDoApp.UI/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "ToDoApp.Core/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "ToDoApp.DB/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}
