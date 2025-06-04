@@ -18,7 +18,7 @@ namespace ToDoApp.UI.Pages
     /// <summary>
     /// Interaction logic for PointsPage.xaml
     /// </summary>
-    public partial class PointsPage : Page
+    public partial class PointsPage : UserControl
     {
         public PointsPage()
         {

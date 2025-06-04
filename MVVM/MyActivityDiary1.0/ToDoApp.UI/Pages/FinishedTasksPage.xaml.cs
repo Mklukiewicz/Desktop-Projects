@@ -18,7 +18,7 @@ namespace ToDoApp.UI.Pages
     /// <summary>
     /// Interaction logic for FinishedTasksPage.xaml
     /// </summary>
-    public partial class FinishedTasksPage : Page
+    public partial class FinishedTasksPage : UserControl
     {
         public FinishedTasksPage()
         {

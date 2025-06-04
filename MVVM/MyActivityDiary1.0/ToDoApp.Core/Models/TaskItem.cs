@@ -17,6 +17,11 @@ namespace ToDoApp.Core.Models
 
         public bool CheckMarked { get; set; }
 
+        public TaskItem()
+        {
+            
+        }
+
         public TaskItem(string title, string description, DateTime dueTime, bool isMarkded)
         {
             Title = title;

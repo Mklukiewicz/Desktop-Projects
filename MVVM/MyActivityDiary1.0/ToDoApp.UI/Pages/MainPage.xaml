@@ -9,11 +9,6 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="MainPage">
     <Grid>
-        <!--<Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>-->
         <TabControl>
             <TabItem Header="Home">
                 <pages:HomePage/>
@@ -22,24 +17,14 @@
                 <pages:ListOfTasksPage/>
             </TabItem>
             <TabItem Header="Calendar">
-                
+                <pages:CalendarPage/>
             </TabItem>
             <TabItem Header="Points">
-                
+                <pages:PointsPage/>
             </TabItem>
             <TabItem Header="Finished Tasks">
-                
+                <pages:FinishedTasksPage/>
             </TabItem>
         </TabControl>
-        <!--<TextBlock Text="LETS GET IT CHAMP!" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="50" Grid.Row="0"/>
-        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="1">
-            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="Ongoing Tasks:" FontSize="25"/>
-            <TextBlock Text="Zadanie Progress End Date"/>
-            <TextBlock Text="Zadanie Progress End Date"/>
-            <TextBlock Text="Zadanie Progress End Date"/>
-        </StackPanel>
-        <StackPanel Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Center">
-            <TextBlock Text="TEN TEKST BEDZIE PODMIENIANY MOTYWACYJNMY HASŁAMI"/>
-        </StackPanel>-->
     </Grid>
 </Page>

@@ -4,17 +4,17 @@
 winexe
 C#
 .cs
-C:\Users\mkluk\source\repos\Desktop-Projects\MVVM\MyActivityDiary1.0\ToDoApp.UI\obj\Debug\net8.0-windows\
+C:\Users\mkluk\Source\Repos\Desktop-Projects\MVVM\MyActivityDiary1.0\ToDoApp.UI\obj\Debug\net8.0-windows\
 ToDoApp.UI
 none
 false
 TRACE;DEBUG;NET;NET8_0;NETCOREAPP
-C:\Users\mkluk\source\repos\Desktop-Projects\MVVM\MyActivityDiary1.0\ToDoApp.UI\App.xaml
-7-359841979
+C:\Users\mkluk\Source\Repos\Desktop-Projects\MVVM\MyActivityDiary1.0\ToDoApp.UI\App.xaml
+8-871688130
 
-11-154819668
+131290179766
 200488594959
-MainWindow.xaml;Pages\CalendarPage.xaml;Pages\FinishedTasksPage.xaml;Pages\HomePage.xaml;Pages\ListOfTasksPage.xaml;Pages\MainPage.xaml;Pages\PointsPage.xaml;
+Controls\WorkTaskControl.xaml;MainWindow.xaml;Pages\CalendarPage.xaml;Pages\FinishedTasksPage.xaml;Pages\HomePage.xaml;Pages\ListOfTasksPage.xaml;Pages\MainPage.xaml;Pages\PointsPage.xaml;
 
-True
+False
 

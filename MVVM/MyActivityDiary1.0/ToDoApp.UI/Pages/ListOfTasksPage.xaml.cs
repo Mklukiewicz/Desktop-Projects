@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using ToDoApp.UI.ViewModels;
 
 namespace ToDoApp.UI.Pages
 {
@@ -23,6 +24,8 @@ namespace ToDoApp.UI.Pages
         public ListOfTasksPage()
         {
             InitializeComponent();
+
+            DataContext = new TaskItemViewModel();
         }
     }
 }

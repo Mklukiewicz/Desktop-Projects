@@ -18,7 +18,7 @@ namespace ToDoApp.UI.Pages
     /// <summary>
     /// Interaction logic for CalendarPage.xaml
     /// </summary>
-    public partial class CalendarPage : Page
+    public partial class CalendarPage : UserControl
     {
         public CalendarPage()
         {
