@@ -32,10 +32,11 @@
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
-            <Button Content="Dodaj Zadanie" Command="{Binding AddNewTaskItem}"/>
+            
             <TextBox Text="{Binding TaskItemViewModelTitle}"/>
             <TextBox Text="{Binding TaskItemViewModelDescription}"/>
-            <Button Content="Usuń"/>
+            <Button Content="Dodaj Zadanie" Command="{Binding AddNewTaskItemCommand}"/>
+            <Button Content="Usuń" Command="{Binding DeleteTaskItemCommand}"/>
         </StackPanel>
         
     </Grid>

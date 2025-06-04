@@ -15,8 +15,6 @@ namespace ToDoApp.Core.Models
         public bool IsCompleted { get; set; }
         public int TaskProgres { get; set; }
 
-        public bool CheckMarked { get; set; }
-
         public TaskItem()
         {
             
