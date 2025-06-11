@@ -28,6 +28,15 @@
     <Compile Update="Pages\PointsPage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Windows\AddTaskWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Windows\TaskInfoWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Windows\UpdateTaskWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Page Update="Controls\WorkTaskControl.xaml">
@@ -52,6 +61,15 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Pages\PointsPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Windows\AddTaskWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Windows\TaskInfoWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Windows\UpdateTaskWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>

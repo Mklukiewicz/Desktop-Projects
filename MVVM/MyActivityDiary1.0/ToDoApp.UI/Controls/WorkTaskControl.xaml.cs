@@ -19,11 +19,16 @@ namespace ToDoApp.UI.Controls
     /// <summary>
     /// Interaction logic for WorkTaskControl.xaml
     /// </summary>
-    public partial class WorkTaskControl : UserControl
+    public partial class WorkTaskControl : UserControl// tutaj poprawić paddingi i marginesyw xamlu
     {
         public WorkTaskControl()
         {
             InitializeComponent();
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

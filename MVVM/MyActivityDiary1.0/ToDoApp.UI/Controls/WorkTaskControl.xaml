@@ -14,5 +14,18 @@
         <TextBlock Text="{Binding Description}"></TextBlock>
         <TextBlock Text=" "/>
         <TextBlock Text="{Binding DueDate}"/>
+        <TextBlock Text=" "/>
+        <!--<Button Content="Info" Command="{Binding OpenInfoWindowCommand}" Width="100" Click="Button_Click"/>-->
+        <!--<Button Content="Info"
+        Width="100"
+        Margin="5"
+        Command="{Binding DataContext.OpenInfoWindowCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"/>-->
+        <Button Content="Info"
+        Width="100"
+        Margin="5"
+        Command="{Binding DataContext.OpenInfoWindowCommand, RelativeSource={RelativeSource AncestorType=UserControl, AncestorLevel=2}}"
+        CommandParameter="{Binding}" />
+
+
     </StackPanel>
 </UserControl>

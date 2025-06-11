@@ -1,0 +1,18 @@
+﻿<Window x:Class="ToDoApp.UI.Windows.UpdateTaskWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ToDoApp.UI.Windows"
+        mc:Ignorable="d"
+        Title="UpdateTaskWindow" Height="450" Width="800">
+    <Grid>
+        <StackPanel Margin="20">
+            <TextBox x:Name="TitleTextBox" Text="Title"  Margin="0,10"/>
+            <TextBox x:Name="DescriptionTextBox" Text="Description" Margin="0,10"/>
+            <TextBox x:Name="Date" Text="Date" Margin="0,10"/>
+            <TextBox x:Name="Progres" Text="Progres" Margin="0,10"/>
+            <Button Content="Aktualizuj" Click="UpdateButton_Click"/>
+        </StackPanel>
+    </Grid>
+</Window>

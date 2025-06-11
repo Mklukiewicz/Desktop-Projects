@@ -20,23 +20,34 @@
              d:DesignHeight="450" d:DesignWidth="800">
 
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
         <StackPanel>
-            <TextBlock Text="Tutaj będzie lista wszystkich bieżących zadań" 
+            <TextBlock Text="Bieżące Zadania" 
            HorizontalAlignment="Center" 
            VerticalAlignment="Center" 
-           FontSize="20" />
-            <ItemsControl ItemsSource="{Binding TaskItems}">
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <controls:WorkTaskControl/>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
-            
-            <TextBox Text="{Binding TaskItemViewModelTitle}"/>
-            <TextBox Text="{Binding TaskItemViewModelDescription}"/>
-            <Button Content="Dodaj Zadanie" Command="{Binding AddNewTaskItemCommand}"/>
-            <Button Content="Usuń" Command="{Binding DeleteTaskItemCommand}"/>
+           FontSize="20" Grid.Row="0" />
+            <StackPanel Grid.Row="1">
+                <ItemsControl ItemsSource="{Binding TaskItems}" >
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <controls:WorkTaskControl/>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </StackPanel>
+
+            <Grid Grid.Row="2">
+                <StackPanel Orientation="Horizontal">
+                    <!--<TextBox Text="{Binding TaskItemViewModelTitle}" Width="200"/>
+                    <TextBox Text="{Binding TaskItemViewModelDescription}" Width="200"/>-->
+                    <Button Content="Dodaj Zadanie" Command="{Binding OpenAddTaskWindowCommand}" Width="100"/>
+                    <Button Content="Usuń" Command="{Binding DeleteTaskItemCommand}" Width="100"/>
+                </StackPanel>
+            </Grid>
         </StackPanel>
         
     </Grid>
