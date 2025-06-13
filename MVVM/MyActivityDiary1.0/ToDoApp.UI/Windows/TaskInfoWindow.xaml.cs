@@ -11,6 +11,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using ToDoApp.Core.Models;
+using ToDoApp.UI.ViewModels;
 
 namespace ToDoApp.UI.Windows
 {
@@ -19,10 +21,7 @@ namespace ToDoApp.UI.Windows
     /// </summary>
     public partial class TaskInfoWindow : Window
     {
-        //public string TaskTitle { get; set; } = TitleTextBox.Text;
-        //public string TaskDescription => DescriptionTextBox.Text;
-        //public string TaskDueDate => DateTimeTextBox.Text;
-        //public string TaskProgress => ProgressTextBox.Text;
+        public TaskItem? CurrentTaskItem { get; set; }
         public TaskInfoWindow()
         {
             InitializeComponent();
@@ -31,11 +30,6 @@ namespace ToDoApp.UI.Windows
         private void Close_Click(object sender, RoutedEventArgs e)
         {
             Close();
-        }
-
-        private void Update_Click(object sender, RoutedEventArgs e)// to bedzie do usuniecia 
-        {
-            Close();
-        }
+        }       
     }
 }

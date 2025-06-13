@@ -1,16 +1,4 @@
-﻿<!--<Page x:Class="ToDoApp.UI.Pages.ListOfTasksPage"
-      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:ToDoApp.UI.Pages"
-      mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
-      Title="ListOfTasksPage">
-    <TextBlock Text="Tutaj bedzie lista wszystkich bieżących zadań"/>
- ten kod byl na poczatku 
-</Page>-->
-<UserControl x:Class="ToDoApp.UI.Pages.ListOfTasksPage"
+﻿<UserControl x:Class="ToDoApp.UI.Pages.ListOfTasksPage"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -42,8 +30,6 @@
 
             <Grid Grid.Row="2">
                 <StackPanel Orientation="Horizontal">
-                    <!--<TextBox Text="{Binding TaskItemViewModelTitle}" Width="200"/>
-                    <TextBox Text="{Binding TaskItemViewModelDescription}" Width="200"/>-->
                     <Button Content="Dodaj Zadanie" Command="{Binding OpenAddTaskWindowCommand}" Width="100"/>
                     <Button Content="Usuń" Command="{Binding DeleteTaskItemCommand}" Width="100"/>
                 </StackPanel>

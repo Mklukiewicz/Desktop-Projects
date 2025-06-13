@@ -28,12 +28,6 @@ namespace ToDoApp.Core.Helpers
         public void Execute(object? parameter)
         {
             _execute((T)parameter!);
-        }
-
-        //public event EventHandler? CanExecuteChanged
-        //{
-        //    add => CommandManager.RequerySuggested += value!;
-        //    remove => CommandManager.RequerySuggested -= value!;
-        //}
+        }  
     }
 }

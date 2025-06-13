@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "NLQ9wPoOuzhbYeJ46u5biWofqwYuHLpabB2fudbHFFFgt54/R4Uq9pVEY2AOLi9BvQvg0TCp8i3Z1qcMrXqiGA==",
+  "dgSpecHash": "p0lP1PSrXFZbZeVniPDlrdeHyY2Jq9AS7nbxlv11QP+Z1Iro08gW+L7Ji7i1DNzOxDeuzVDe/EQKiP5KSBx5Hw==",
   "success": true,
-  "projectFilePath": "C:\\Users\\mkluk\\Source\\Repos\\Desktop-Projects\\MVVM\\MyActivityDiary1.0\\ToDoApp.UI\\ToDoApp.UI.csproj",
+  "projectFilePath": "C:\\Users\\mkluk\\source\\repos\\Desktop-Projects\\MVVM\\MyActivityDiary1.0\\ToDoApp.UI\\ToDoApp.UI.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\mkluk\\.nuget\\packages\\commonservicelocator\\2.0.2\\commonservicelocator.2.0.2.nupkg.sha512",
     "C:\\Users\\mkluk\\.nuget\\packages\\libuv\\1.9.1\\libuv.1.9.1.nupkg.sha512",

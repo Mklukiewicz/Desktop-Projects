@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "vzxBbC3A2pN2Wh5bPVCSL7urYch/cnkKVfuKEQVMyeEbhSEUzmc8/hvy3Bjcfx5R+a+O80jDmlhJBPGaxuhvYw==",
+  "dgSpecHash": "f1ZNS7L1PixM4tqiNS3MAbDMWTpxGiRS6twGaKfBhf/FP/r6lIfqs4RNlxh6QDKa1iqarvyFsrjwD9jk7OCn9w==",
   "success": true,
-  "projectFilePath": "C:\\Users\\mkluk\\Source\\Repos\\Desktop-Projects\\MVVM\\MyActivityDiary1.0\\ToDoApp.Core\\ToDoApp.Core.csproj",
+  "projectFilePath": "C:\\Users\\mkluk\\source\\repos\\Desktop-Projects\\MVVM\\MyActivityDiary1.0\\ToDoApp.Core\\ToDoApp.Core.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }

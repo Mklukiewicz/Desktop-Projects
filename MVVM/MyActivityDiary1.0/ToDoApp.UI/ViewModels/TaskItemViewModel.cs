@@ -12,12 +12,14 @@ using System.Xml.Linq;
 using ToDoApp.Core.Helpers;
 using ToDoApp.Core.Models;
 using ToDoApp.UI.Windows;
+using System.Linq;
+using System.Windows;
 
 namespace ToDoApp.UI.ViewModels
 {
     public class TaskItemViewModel
     {
-        public string TaskItemViewModelTitle { get; set; }
+        public string TaskItemViewModelTitle { get; set; }// nie ma referencji usunac 
         public string? TaskItemViewModelDescription { get; set; }
         public DateTime TaskItemViewModelDueTime { get; set; }
         public bool TaskItemViewModelIsChecked { get; set; }
@@ -28,7 +30,6 @@ namespace ToDoApp.UI.ViewModels
             OpenAddTaskWindowCommand = new RelayCommand(OpenAddTaskWindow);
             OpenInfoWindowCommand = new RelayCommandGeneric<TaskItem>(OpenInfoWindow);
             OpenUpdateWindowCommand = new RelayCommandGeneric<TaskItem>(OpenUpdateWindow);
-
         }
         public ObservableCollection<TaskItem> TaskItems { get; set; } = new ObservableCollection<TaskItem>();
 
@@ -60,12 +61,29 @@ namespace ToDoApp.UI.ViewModels
 
         private void OpenUpdateWindow(TaskItem taskItem)
         {
-            var window = new UpdateTaskWindow();
+            var window = new UpdateTaskWindow()
+            {
+                DataContext = taskItem,
+            };
+
+            window.TitleTextBox.Text = taskItem.Title;
+            window.DescriptionTextBox.Text = taskItem.Description;
+            window.DateTextBox.Text = taskItem.DueDate.ToString();
+            window.ProgressTextBox.Text = taskItem.TaskProgres.ToString();
+
+
+           
+            window.ShowDialog();
         }
 
         private void OpenInfoWindow(TaskItem taskItem)
         {
-            var window = new TaskInfoWindow();
+            var window = new TaskInfoWindow()
+            {
+                DataContext = this,
+                CurrentTaskItem = taskItem,
+                
+            };
 
             window.TitleTextBox.Text = taskItem.Title;
             window.DescriptionTextBox.Text = taskItem.Description;
@@ -73,7 +91,6 @@ namespace ToDoApp.UI.ViewModels
             window.ProgressTextBox.Text = taskItem.TaskProgres.ToString();
 
             window.ShowDialog();
-        }
-            //update task metoda która będzie w wyskakującym oknie 
+        }          
     }
 }

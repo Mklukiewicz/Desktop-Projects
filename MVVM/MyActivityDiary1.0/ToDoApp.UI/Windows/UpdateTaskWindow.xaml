@@ -8,11 +8,12 @@
         Title="UpdateTaskWindow" Height="450" Width="800">
     <Grid>
         <StackPanel Margin="20">
-            <TextBox x:Name="TitleTextBox" Text="Title"  Margin="0,10"/>
-            <TextBox x:Name="DescriptionTextBox" Text="Description" Margin="0,10"/>
-            <TextBox x:Name="Date" Text="Date" Margin="0,10"/>
-            <TextBox x:Name="Progres" Text="Progres" Margin="0,10"/>
+            <TextBox x:Name="TitleTextBox"   Margin="0,10"/>
+            <TextBox x:Name="DescriptionTextBox"  Margin="0,10"/>
+            <TextBox x:Name="DateTextBox"  Margin="0,10"/>
+            <TextBox x:Name="ProgressTextBox"  Margin="0,10"/>
             <Button Content="Aktualizuj" Click="UpdateButton_Click"/>
+            <Button Content="Zamknij" Click="Close_Click"/>
         </StackPanel>
     </Grid>
 </Window>

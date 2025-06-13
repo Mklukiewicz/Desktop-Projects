@@ -13,7 +13,8 @@
                 <TextBlock x:Name="DescriptionTextBox" Margin="0,10"/>
                 <TextBlock x:Name="DateTimeTextBox" Margin="0,10"/>
                 <TextBlock x:Name="ProgressTextBox" Margin="0,10"/>
-                <Button Content="Aktualizuj" Click="Update_Click"/>
+                <Button Content="Aktualizuj" Command="{Binding DataContext.OpenUpdateWindowCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                        CommandParameter="{Binding CurrentTaskItem, RelativeSource={RelativeSource AncestorType=Window}}"/>
                 <Button Content="Zamknij" Click="Close_Click"/>
             </StackPanel>
         </Grid>

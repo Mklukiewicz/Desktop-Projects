@@ -33,11 +33,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\mkluk\\Source\\Repos\\Desktop-Projects\\MVVM\\MyActivityDiary1.0\\ToDoApp.DB\\ToDoApp.DB.csproj",
+      "projectUniqueName": "C:\\Users\\mkluk\\source\\repos\\Desktop-Projects\\MVVM\\MyActivityDiary1.0\\ToDoApp.DB\\ToDoApp.DB.csproj",
       "projectName": "ToDoApp.DB",
-      "projectPath": "C:\\Users\\mkluk\\Source\\Repos\\Desktop-Projects\\MVVM\\MyActivityDiary1.0\\ToDoApp.DB\\ToDoApp.DB.csproj",
+      "projectPath": "C:\\Users\\mkluk\\source\\repos\\Desktop-Projects\\MVVM\\MyActivityDiary1.0\\ToDoApp.DB\\ToDoApp.DB.csproj",
       "packagesPath": "C:\\Users\\mkluk\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\mkluk\\Source\\Repos\\Desktop-Projects\\MVVM\\MyActivityDiary1.0\\ToDoApp.DB\\obj\\",
+      "outputPath": "C:\\Users\\mkluk\\source\\repos\\Desktop-Projects\\MVVM\\MyActivityDiary1.0\\ToDoApp.DB\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -60,8 +60,8 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "C:\\Users\\mkluk\\Source\\Repos\\Desktop-Projects\\MVVM\\MyActivityDiary1.0\\ToDoApp.Core\\ToDoApp.Core.csproj": {
-              "projectPath": "C:\\Users\\mkluk\\Source\\Repos\\Desktop-Projects\\MVVM\\MyActivityDiary1.0\\ToDoApp.Core\\ToDoApp.Core.csproj"
+            "C:\\Users\\mkluk\\source\\repos\\Desktop-Projects\\MVVM\\MyActivityDiary1.0\\ToDoApp.Core\\ToDoApp.Core.csproj": {
+              "projectPath": "C:\\Users\\mkluk\\source\\repos\\Desktop-Projects\\MVVM\\MyActivityDiary1.0\\ToDoApp.Core\\ToDoApp.Core.csproj"
             }
           }
         }
