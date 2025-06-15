@@ -52,7 +52,7 @@ namespace ToDoApp.UI.Controls {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/ToDoApp.UI;V1.0.0.0;component/controls/worktaskcontrol.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/ToDoApp.UI;component/controls/worktaskcontrol.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\..\Controls\WorkTaskControl.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

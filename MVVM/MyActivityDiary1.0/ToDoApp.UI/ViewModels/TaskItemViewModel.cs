@@ -14,6 +14,7 @@ using ToDoApp.Core.Models;
 using ToDoApp.UI.Windows;
 using System.Linq;
 using System.Windows;
+using System.Reflection.Metadata;
 
 namespace ToDoApp.UI.ViewModels
 {
@@ -23,13 +24,13 @@ namespace ToDoApp.UI.ViewModels
         public string? TaskItemViewModelDescription { get; set; }
         public DateTime TaskItemViewModelDueTime { get; set; }
         public bool TaskItemViewModelIsChecked { get; set; }
-      
+
         public TaskItemViewModel()
         {
             DeleteTaskItemCommand = new RelayCommand(DeleteTaskItem);
             OpenAddTaskWindowCommand = new RelayCommand(OpenAddTaskWindow);
             OpenInfoWindowCommand = new RelayCommandGeneric<TaskItem>(OpenInfoWindow);
-            OpenUpdateWindowCommand = new RelayCommandGeneric<TaskItem>(OpenUpdateWindow);
+            OpenUpdateWindowCommand = new RelayCommandParam(OpenUpdateWindow);
         }
         public ObservableCollection<TaskItem> TaskItems { get; set; } = new ObservableCollection<TaskItem>();
 
@@ -59,36 +60,34 @@ namespace ToDoApp.UI.ViewModels
             }
         }
 
-        private void OpenUpdateWindow(TaskItem taskItem)
+        private void OpenUpdateWindow( object? parameter)
         {
-            var window = new UpdateTaskWindow()
-            {
-                DataContext = taskItem,
-            };
+            if (parameter is Tuple<object, object> tuple &&
+                 tuple.Item1 is TaskItem taskItem &&
+                 tuple.Item2 is Window infoWindow)
+            { 
+                infoWindow.Close();
 
-            window.TitleTextBox.Text = taskItem.Title;
-            window.DescriptionTextBox.Text = taskItem.Description;
-            window.DateTextBox.Text = taskItem.DueDate.ToString();
-            window.ProgressTextBox.Text = taskItem.TaskProgres.ToString();
+                var window = new UpdateTaskWindow
+                {
+                    DataContext = taskItem
+                };
 
+                window.TitleTextBox.Text = taskItem.Title;
+                window.DescriptionTextBox.Text = taskItem.Description;
+                window.DateTextBox.Text = taskItem.DueDate.ToString();
 
-           
-            window.ShowDialog();
+                window.ShowDialog();
+            }
         }
 
-        private void OpenInfoWindow(TaskItem taskItem)
+        private void OpenInfoWindow(TaskItem taskItem)// w zadaniu mozna dodać również regress
         {
             var window = new TaskInfoWindow()
             {
-                DataContext = this,
-                CurrentTaskItem = taskItem,
-                
+                DataContext = taskItem,
+                ParentViewModel = this
             };
-
-            window.TitleTextBox.Text = taskItem.Title;
-            window.DescriptionTextBox.Text = taskItem.Description;
-            window.DateTimeTextBox.Text = taskItem.DueDate.ToString();
-            window.ProgressTextBox.Text = taskItem.TaskProgres.ToString();
 
             window.ShowDialog();
         }          

@@ -22,6 +22,9 @@ namespace ToDoApp.UI.Windows
     public partial class TaskInfoWindow : Window
     {
         public TaskItem? CurrentTaskItem { get; set; }
+
+        public TaskItemViewModel? ParentViewModel { get; set; }
+
         public TaskInfoWindow()
         {
             InitializeComponent();
