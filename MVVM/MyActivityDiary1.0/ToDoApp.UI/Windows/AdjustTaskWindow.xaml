@@ -1,0 +1,46 @@
+﻿<Window x:Class="ToDoApp.UI.Windows.AdjustTaskWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ToDoApp.UI.Windows"
+        xmlns:helper="clr-namespace:ToDoApp.UI.UIHelpers"
+        mc:Ignorable="d"
+        Title="AdjustTaskWindow" Height="450" Width="800">
+    <Window.Resources>
+        <helper:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+        <helper:InvertBoolConverter x:Key="InvertBoolConverter"/>
+    </Window.Resources>
+    <Grid>
+        <StackPanel Margin="20" Orientation="Vertical" VerticalAlignment="Top">
+            <!--// DATA KOŃCOWA-->
+            <TextBlock Text="Czy zadanie ma datę zakończenia?" Margin="0,0,0,10" />
+            <StackPanel Orientation="Horizontal">
+                <RadioButton Content="Tak" IsChecked="{Binding HasTaskFinishDateProgress}" GroupName="FinishDate" Margin="0,0,10,0" />
+                <RadioButton Content="Nie" IsChecked="{Binding HasTaskFinishDateProgress, Converter={StaticResource InvertBoolConverter}}" GroupName="FinishDate" />
+            </StackPanel>
+            <DatePicker SelectedDate="{Binding FinishDate}" Visibility="{Binding HasTaskFinishDateProgress, Converter={StaticResource BoolToVisibilityConverter}}" />
+
+            <!--// POSTĘP LICZBOWY-->
+            <TextBlock Text="Czy zadanie ma postęp liczbowy?" Margin="0,0,0,10"/>
+            <StackPanel Orientation="Horizontal">
+                <RadioButton Content="Tak" IsChecked="{Binding HasTaskIntProgress}" GroupName="IntProgress" Margin="0,0,10,0" />
+                <RadioButton Content="Nie" IsChecked="{Binding HasTaskIntProgress, Converter={StaticResource InvertBoolConverter}}" GroupName="IntProgress" />
+            </StackPanel>
+            <StackPanel Visibility="{Binding HasTaskIntProgress, Converter={StaticResource BoolToVisibilityConverter}}">
+                <TextBlock Text="Aktualny postęp:" />
+                <TextBox Text="{Binding CurrentProgress}" />
+                <TextBlock Text="Maksymalny postęp:" />
+                <TextBox Text="{Binding MaxProgress}" />
+            </StackPanel>
+
+            <!--POSTĘP OPISOWY-->
+            <TextBlock Text="Czy zadanie ma postęp opisowy?" Margin="0,0,0,10"/>
+            <StackPanel Orientation="Horizontal">
+                <RadioButton Content="Tak" IsChecked="{Binding HasTaskStringProgress}" GroupName="StringProgress" Margin="0,0,10,0" />
+                <RadioButton Content="Nie" IsChecked="{Binding HasTaskStringProgress, Converter={StaticResource InvertBoolConverter}}" GroupName="StringProgress" />
+            </StackPanel>
+            <TextBox Text="{Binding DescriptionProgress}" Visibility="{Binding HasTaskStringProgress, Converter={StaticResource BoolToVisibilityConverter}}" />
+        </StackPanel>
+    </Grid>
+</Window>

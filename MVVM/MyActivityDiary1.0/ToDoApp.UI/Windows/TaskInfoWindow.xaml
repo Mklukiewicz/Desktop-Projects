@@ -18,20 +18,15 @@
                 <TextBlock  Text="{Binding Description}" Margin="0,10"/>
                 <TextBlock  Text="{Binding DueDate}" Margin="0,10"/>
                 <TextBlock  Text="{Binding TaskProgres}" Margin="0,10"/>
-                <!--<Button Content="Aktualizuj" Command="{Binding DataContext.OpenUpdateWindowCommand, RelativeSource={RelativeSource AncestorType=Window}}"
-                        CommandParameter="{Binding CurrentTaskItem, RelativeSource={RelativeSource AncestorType=Window}}"/>-->
                 <Button Content="Aktualizuj"
                         Command="{Binding ParentViewModel.OpenUpdateWindowCommand, RelativeSource={RelativeSource AncestorType=Window}}">
                     <Button.CommandParameter>
                         <MultiBinding Converter="{StaticResource TupleConverter}">
                             <Binding Path="." />
                             <Binding RelativeSource="{RelativeSource AncestorType=Window}" />
-                            <!--<Binding Path="." RelativeSource="{RelativeSource AncestorType=Window}" />
-                            <Binding RelativeSource="{RelativeSource AncestorType=Window}" />-->
                         </MultiBinding>
                     </Button.CommandParameter>
                 </Button>
-
                 <Button Content="Zamknij" Click="Close_Click"/>
             </StackPanel>
         </Grid>

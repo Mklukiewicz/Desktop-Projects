@@ -24,6 +24,10 @@ namespace ToDoApp.UI.ViewModels
         public string? TaskItemViewModelDescription { get; set; }
         public DateTime TaskItemViewModelDueTime { get; set; }
         public bool TaskItemViewModelIsChecked { get; set; }
+        public bool? HasTaskProgress { get; set; }
+        public bool? HasTaskFinishDateProgress { get; set; }
+        public bool? HasTaskIntProgress { get; set; }
+        public bool? HasTaskStringProgress { get; set; }
 
         public TaskItemViewModel()
         {
@@ -53,11 +57,27 @@ namespace ToDoApp.UI.ViewModels
         private void OpenAddTaskWindow()// rozpisać tą metode co i jak
         {
             var window = new AddTaskWindow();
+                    
             if (window.ShowDialog() == true)
             {
-                var newTask = new TaskItem(window.TaskTitle, window.TaskDescription, window.DueDate, false);
-                TaskItems.Add(newTask); // lub taskService.Add(newTask)
-            }
+               var newTask = new TaskItem(window.TaskTitle, window.TaskDescription, window.StartDate, false);
+
+                var vm = window.DataContext as TaskItemViewModel;
+
+                if (vm != null && vm.HasTaskProgress == true)
+                {
+                    var adjustWindow = new AdjustTaskWindow
+                    {
+                        DataContext = vm
+                    };
+                    adjustWindow.ShowDialog();
+                }
+                else
+                {
+                    TaskItems.Add(newTask);
+                }
+
+            }                     
         }
 
         private void OpenUpdateWindow( object? parameter)

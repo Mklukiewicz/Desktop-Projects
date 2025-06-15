@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using ToDoApp.UI.ViewModels;
 
 namespace ToDoApp.UI.Windows
 {
@@ -21,16 +22,33 @@ namespace ToDoApp.UI.Windows
     {
         public string TaskTitle => TitleTextBox.Text;
         public string TaskDescription => DescriptionTextBox.Text;
-        public DateTime DueDate => DueDatePicker.SelectedDate ?? DateTime.Now;
+        public DateTime StartDate => StartDatePicker.SelectedDate ?? DateTime.Now;
+        public TaskItemViewModel ViewModel { get; }
         public AddTaskWindow()
         {
             InitializeComponent();
+            ViewModel = new TaskItemViewModel();
+            this.DataContext = ViewModel;
         }
 
         private void AddButton_Click(object sender, RoutedEventArgs e)
         {
-            DialogResult = true;
-            Close();
+            var vm = this.ViewModel;
+
+            if (vm.HasTaskProgress == true)
+            {
+                var adjust = new AdjustTaskWindow()
+                {
+                    DataContext = vm // przekazujemy całą konfigurację
+                };
+                adjust.ShowDialog();
+            }
+            else
+            {
+                DialogResult = true;
+                Close();
+            }
+             
         }
     }
 }

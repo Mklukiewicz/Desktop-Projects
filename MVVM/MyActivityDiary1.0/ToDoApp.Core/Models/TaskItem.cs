@@ -9,7 +9,7 @@ namespace ToDoApp.Core.Models
 {
     public class TaskItem : INotifyPropertyChanged
     {
-        public int Id { get; set; }
+        public int Id { get; set; }// to bedzie wykorzystane do bazy danych 
 
         private string _title = string.Empty;
 
@@ -41,7 +41,13 @@ namespace ToDoApp.Core.Models
         }
         public DateTime DueDate { get; set; }
         public bool IsCompleted { get; set; }
-        public int TaskProgres { get; set; }// tutaj ma byc dostosowanie czy ilosc razy czy bez progresu tylko data czy ile dni do konca
+        public bool TaskProgress { get; set; }
+        public DateTime FinishDate { get; set; }// tutaj trzeba dodać różnice dni 
+        public int CurrentProgressDay { get; set; }
+        public int TotalDays { get; set; }
+        public int ProgressMaxInt { get; set; }
+        public int ProgressCurrentInt { get; set; }// trzeba pamietac że current progress musi byc zawsze mniejszy niż max progress
+        public string? ProgressString { get; set; }
      
         public TaskItem(string title, string description, DateTime dueTime, bool isMarkded)
         {
@@ -55,20 +61,20 @@ namespace ToDoApp.Core.Models
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
-        public int SetProgres(int progres)// nie ma referencji usunac , metoda pomocnicza zobaczymy czy bedzie uzywana
-        {
-           return this.TaskProgres = progres;
-        }
+        //public int SetProgres(int progres)// nie ma referencji usunac , metoda pomocnicza zobaczymy czy bedzie uzywana
+        //{
+        //   return this.TaskProgres = progres;
+        //}
 
-        public int AddProgress()// nie ma referencji usunac , metoda pomocnicza zobaczymy czy bedzie uzywana
-        {
-            return TaskProgres++;
-        }
+        //public int AddProgress()// nie ma referencji usunac , metoda pomocnicza zobaczymy czy bedzie uzywana
+        //{
+        //    return TaskProgres++;
+        //}
 
-        public int MinusProgress()// nie ma referencji usunac , metoda pomocnicza zobaczymy czy bedzie uzywana
-        {
-            return TaskProgres--;
-        }
+        //public int MinusProgress()// nie ma referencji usunac , metoda pomocnicza zobaczymy czy bedzie uzywana
+        //{
+        //    return TaskProgres--;
+        //}
 
         protected void OnPropertyChanged(string propertyName)// metoda pomocniczna wywołująca event change 
         {
