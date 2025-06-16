@@ -20,26 +20,21 @@ namespace ToDoApp.UI.Windows
     /// </summary>
     public partial class AddTaskWindow : Window
     {
-        public string TaskTitle => TitleTextBox.Text;
-        public string TaskDescription => DescriptionTextBox.Text;
-        public DateTime StartDate => StartDatePicker.SelectedDate ?? DateTime.Now;
         public TaskItemViewModel ViewModel { get; }
         public AddTaskWindow()
         {
-            InitializeComponent();
-            ViewModel = new TaskItemViewModel();
-            this.DataContext = ViewModel;
+            InitializeComponent();    
         }
 
         private void AddButton_Click(object sender, RoutedEventArgs e)
         {
-            var vm = this.ViewModel;
+            var vm = this.DataContext as TaskItemViewModel;
 
             if (vm.HasTaskProgress == true)
             {
                 var adjust = new AdjustTaskWindow()
                 {
-                    DataContext = vm // przekazujemy całą konfigurację
+                    DataContext = vm
                 };
                 adjust.ShowDialog();
             }

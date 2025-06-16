@@ -12,7 +12,7 @@
         <TextBlock Text=" "/>
         <TextBlock Text="{Binding Description}"></TextBlock>
         <TextBlock Text=" "/>
-        <TextBlock Text="{Binding DueDate}"/>
+        <TextBlock Text="{Binding StartDate}"/>
         <TextBlock Text=" "/>
         <Button Content="Info"
         Width="100"

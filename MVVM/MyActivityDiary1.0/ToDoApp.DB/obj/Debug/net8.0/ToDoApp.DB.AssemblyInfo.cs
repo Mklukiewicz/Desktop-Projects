@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ToDoApp.DB")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8a88646cd325d024110e4a6d49f775283b97cce0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+85f68e38ecfce67a697723b90fa0688a29b54918")]
 [assembly: System.Reflection.AssemblyProductAttribute("ToDoApp.DB")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ToDoApp.DB")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

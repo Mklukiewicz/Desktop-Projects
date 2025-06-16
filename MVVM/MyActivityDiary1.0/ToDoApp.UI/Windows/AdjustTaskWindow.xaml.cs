@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,10 +19,10 @@ namespace ToDoApp.UI.Windows
     /// Interaction logic for AdjustTaskWindow.xaml
     /// </summary>
     public partial class AdjustTaskWindow : Window
-    {
+    {       
         public AdjustTaskWindow()
         {
             InitializeComponent();
-        }
+        }       
     }
 }
