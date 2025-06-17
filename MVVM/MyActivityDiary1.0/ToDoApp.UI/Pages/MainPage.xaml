@@ -9,11 +9,11 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="MainPage">
     <Grid>
-        <TabControl>
-            <TabItem Header="Home">
-                <pages:HomePage/>
+        <TabControl x:Name="MainTabControl">
+            <TabItem x:Name="HomeTab" Header="Home">
+                <pages:HomePage />
             </TabItem>
-            <TabItem Header="List of Tasks">
+            <TabItem x:Name="ListTab" Header="List of Tasks">
                 <pages:ListOfTasksPage/>
             </TabItem>
             <TabItem Header="Calendar">

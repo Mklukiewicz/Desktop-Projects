@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using ToDoApp.UI.ViewModels;
 
 namespace ToDoApp.UI.Pages
 {
@@ -20,9 +21,17 @@ namespace ToDoApp.UI.Pages
     /// </summary>
     public partial class MainPage : Page
     {
+        public TaskItemViewModel SharedViewModel { get; } = new TaskItemViewModel();
+
         public MainPage()
         {
             InitializeComponent();
+
+            var homePage = new HomePage { DataContext = SharedViewModel };
+            var listPage = new ListOfTasksPage { DataContext = SharedViewModel };
+
+            HomeTab.Content = homePage;
+            ListTab.Content = listPage;
         }
     }
 }
