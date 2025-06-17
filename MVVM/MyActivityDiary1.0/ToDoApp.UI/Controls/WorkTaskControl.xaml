@@ -9,13 +9,20 @@
 
     <UserControl.Resources>
         <helper:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+        <helper:InvertBoolToVisibilityConverter x:Key="InvertBoolToVisibilityConverter"/>
     </UserControl.Resources>
+
     <Border BorderBrush="LightGray" BorderThickness="1" CornerRadius="6" Margin="5" Padding="10">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
+                <!-- Wiersz 0: Tytuł i data -->
                 <RowDefinition Height="Auto"/>
+                <!-- Wiersz 1: Opis + Ukończ -->
                 <RowDefinition Height="Auto"/>
+                <!-- Wiersz 2: Postęp -->
+                <RowDefinition Height="Auto"/>
+                <!-- Wiersz 3: Przycisk Aktualizuj -->
             </Grid.RowDefinitions>
 
             <Grid.ColumnDefinitions>
@@ -25,14 +32,21 @@
             </Grid.ColumnDefinitions>
 
             <!-- Wiersz 0: Tytuł + Data -->
-            <CheckBox Grid.Row="0" Grid.Column="0" IsChecked="{Binding IsCompleted}" VerticalAlignment="Top" Margin="0,0,10,0"/>
+            <CheckBox Grid.Row="0" Grid.Column="0" IsChecked="{Binding IsCompleted}" Visibility="{Binding IsFinished, Converter={StaticResource InvertBoolToVisibilityConverter}}" VerticalAlignment="Top" Margin="0,0,10,0"/>
             <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding Title}" FontWeight="Bold" FontSize="14"/>
             <TextBlock Grid.Row="0" Grid.Column="2" Text="{Binding StartDate, StringFormat='{}({0:dd.MM.yyyy})'}" Foreground="Gray" FontStyle="Italic" Margin="10,0,0,0"/>
 
-            <!-- Wiersz 1: Opis -->
+            <!-- Wiersz 1: Opis + Ukończ -->
             <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Description}" TextWrapping="Wrap" Foreground="DarkSlateGray" Margin="0,4,0,0"/>
+            <Button Grid.Row="1" Grid.Column="2"
+                    Content="Ukończ"
+                    Visibility="{Binding IsFinished, Converter={StaticResource InvertBoolToVisibilityConverter}}"
+                    Width="100"
+                    Margin="10,5,0,0"
+                    Command="{Binding DataContext.FinishTaskItemCommand, RelativeSource={RelativeSource AncestorType=UserControl, AncestorLevel=2}}"
+                    CommandParameter="{Binding}" />
 
-            <!-- Wiersz 2: Postęp i przycisk -->
+            <!-- Wiersz 2: Postęp -->
             <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal" Margin="0,6,0,0"
                         Visibility="{Binding TaskProgress, Converter={StaticResource BoolToVisibilityConverter}}">
                 <TextBlock Text="{Binding ProgressAsText, StringFormat='{}{0} jednostek'}" Margin="0,0,15,0"/>
@@ -41,10 +55,12 @@
                            Visibility="{Binding HasTaskStringProgress, Converter={StaticResource BoolToVisibilityConverter}}"/>
             </StackPanel>
 
-            <Button Grid.Row="2" Grid.Column="2"
+            <!-- Wiersz 3: Aktualizuj -->
+            <Button Grid.Row="3" Grid.Column="2"
                     Content="Aktualizuj"
                     Width="100"
-                    Margin="10,5,0,0"                   
+                    Visibility="{Binding IsFinished, Converter={StaticResource InvertBoolToVisibilityConverter}}"
+                    Margin="10,5,0,0"
                     Command="{Binding DataContext.OpenUpdateWindowCommand, RelativeSource={RelativeSource AncestorType=UserControl, AncestorLevel=2}}"
                     CommandParameter="{Binding}" />
         </Grid>

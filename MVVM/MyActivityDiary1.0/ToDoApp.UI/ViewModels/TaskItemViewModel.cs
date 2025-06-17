@@ -174,12 +174,15 @@ namespace ToDoApp.UI.ViewModels
             DeleteTaskItemCommand = new RelayCommand(DeleteTaskItem);
             OpenAddTaskWindowCommand = new RelayCommand(OpenAddTaskWindow);
             OpenUpdateWindowCommand = new RelayCommandParam(OpenUpdateWindow);
+            FinishTaskItemCommand = new RelayCommandParam(FinishTaskItem);
         }
         public ObservableCollection<TaskItem> TaskItems { get; set; } = new ObservableCollection<TaskItem>();
+        public ObservableCollection<TaskItem> FinishedTaskItems { get; set; } = new ObservableCollection<TaskItem>();
 
         public  ICommand DeleteTaskItemCommand { get; set; }
         public  ICommand OpenAddTaskWindowCommand { get; set; }
         public  ICommand OpenUpdateWindowCommand { get; set; }
+        public  ICommand FinishTaskItemCommand { get; set; }
 
        
         private void DeleteTaskItem()
@@ -261,7 +264,6 @@ namespace ToDoApp.UI.ViewModels
                 ProgressValidationError = null;
             }
         }
-
         private void ValidateStringProgress()
         {
             if (HasTaskStringProgress && string.IsNullOrWhiteSpace(TaskStringProgress))
@@ -273,5 +275,17 @@ namespace ToDoApp.UI.ViewModels
                 StringProgressError = null;
             }
         }       
+        private void FinishTaskItem(object? parameter)
+        {
+            if (parameter is TaskItem taskItemToFinish)
+            {
+                taskItemToFinish.IsFinished = true;
+
+                if (!FinishedTaskItems.Contains(taskItemToFinish))
+                    FinishedTaskItems.Add(taskItemToFinish);
+
+                TaskItems.Remove(taskItemToFinish);
+            }          
+        }
     }
 }

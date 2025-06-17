@@ -22,7 +22,7 @@
             <TabItem Header="Points">
                 <pages:PointsPage/>
             </TabItem>
-            <TabItem Header="Finished Tasks">
+            <TabItem x:Name="FinishedTasksTab" Header="Finished Tasks">
                 <pages:FinishedTasksPage/>
             </TabItem>
         </TabControl>

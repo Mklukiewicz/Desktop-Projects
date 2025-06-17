@@ -36,16 +36,16 @@
         </Grid.ColumnDefinitions>
 
         <!-- Tytuł -->
-        <TextBlock Text="Tytuł:" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" />
-        <TextBox Text="{Binding Title}" Grid.Row="0" Grid.Column="1" Margin="5" />
+        <TextBlock Text="Tytuł:"  Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" />
+        <TextBox Text="{Binding Title}" x:Name="TitleTextBox" Grid.Row="0" Grid.Column="1" Margin="5" />
 
         <!-- Opis -->
         <TextBlock Text="Opis:" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" />
-        <TextBox Text="{Binding Description}" Grid.Row="1" Grid.Column="1" Margin="5" />
+        <TextBox Text="{Binding Description}" x:Name="DescriptionTextBox" Grid.Row="1" Grid.Column="1" Margin="5" />
 
         <!-- Data rozpoczęcia -->
         <TextBlock Text="Data rozpoczęcia:" Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" />
-        <DatePicker SelectedDate="{Binding StartDate}" Grid.Row="2" Grid.Column="1" Margin="5" />
+        <DatePicker x:Name="StartDatePicker" SelectedDate="{Binding StartDate}" Grid.Row="2" Grid.Column="1" Margin="5" />
 
         <!-- Checkbox dodania postępu -->
         <CheckBox Content="Czy dodać postęp do zadania?"  Grid.Row="3" Grid.ColumnSpan="2" Margin="5"
@@ -54,24 +54,24 @@
         <!-- Data zakończenia -->
         <TextBlock Text="Data zakończenia:" Grid.Row="4" Grid.Column="0" VerticalAlignment="Center"
                    Visibility="{Binding TaskProgress, Converter={StaticResource BoolToVisibilityConverter}}" />
-        <DatePicker SelectedDate="{Binding FinishDate}" Grid.Row="4" Grid.Column="1" Margin="5"
+        <DatePicker SelectedDate="{Binding FinishDate}" x:Name="FinishDatePicker" Grid.Row="4" Grid.Column="1" Margin="5"
                     Visibility="{Binding TaskProgress, Converter={StaticResource BoolToVisibilityConverter}}" />
 
         <!-- Postęp liczbowy -->
         <TextBlock Text="Aktualny postęp:" Grid.Row="5" Grid.Column="0" VerticalAlignment="Center"
                    Visibility="{Binding TaskProgress, Converter={StaticResource BoolToVisibilityConverter}}" />
-        <TextBox Text="{Binding ProgressCurrentInt}" Grid.Row="5" Grid.Column="1" Margin="5"
+        <TextBox Text="{Binding ProgressCurrentInt}" x:Name="CurrentProgressTextBox" Grid.Row="5" Grid.Column="1" Margin="5"
                  Visibility="{Binding TaskProgress, Converter={StaticResource BoolToVisibilityConverter}}" />
 
         <TextBlock Text="Maksymalny postęp:" Grid.Row="6" Grid.Column="0" VerticalAlignment="Center"
                    Visibility="{Binding TaskProgress, Converter={StaticResource BoolToVisibilityConverter}}" />
-        <TextBox Text="{Binding ProgressMaxInt}" Grid.Row="6" Grid.Column="1" Margin="5"
+        <TextBox Text="{Binding ProgressMaxInt}" x:Name="MaxProgressTextBox" Grid.Row="6" Grid.Column="1" Margin="5"
                  Visibility="{Binding TaskProgress, Converter={StaticResource BoolToVisibilityConverter}}" />
 
         <!-- Postęp opisowy -->
         <TextBlock Text="Postęp opisowy:" Grid.Row="7" Grid.Column="0" VerticalAlignment="Center"
                    Visibility="{Binding TaskProgress, Converter={StaticResource BoolToVisibilityConverter}}" />
-        <TextBox Text="{Binding ProgressString}" Grid.Row="7" Grid.Column="1" Margin="5"
+        <TextBox Text="{Binding ProgressString}" x:Name="ProgressStringTextBox" Grid.Row="7" Grid.Column="1" Margin="5"
                  Visibility="{Binding TaskProgress, Converter={StaticResource BoolToVisibilityConverter}}" />
 
         <!-- Przyciski -->

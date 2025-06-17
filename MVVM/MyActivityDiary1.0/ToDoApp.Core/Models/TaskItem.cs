@@ -10,15 +10,17 @@ namespace ToDoApp.Core.Models
 {
     public class TaskItem : INotifyPropertyChanged
     {
+        private bool _showProgressFields = false;// ulozyc fieldy w kolejnosci alfabetycznej przy robieniu CleanCode
+        private int _progressMaxInt;
+        private bool _taskProgress;
+        private int _progressCurrentInt;
+        private string? _progressString;
         public int Id { get; set; }// to bedzie wykorzystane do bazy danych 
 
         private string _title = string.Empty;// priorytetowośc zadania trzeba zaznaczyć jak ważne jest zadanie,
                                              // na pierwszej stronie mają się wyświetlać tylko priorytetowe zadania
-
         private string _description = string.Empty;
-
         private DateTime _startDate;
-
         private DateTime? _finishDate;
         public string Title
         {
@@ -31,8 +33,7 @@ namespace ToDoApp.Core.Models
                     OnPropertyChanged(nameof(Title));
                 }
             }
-        }
-
+        }// ulozyc property w kolejnosci alfabetycznej przy robieniu CleanCode
         public string? Description
         {
             get => _description;
@@ -61,9 +62,20 @@ namespace ToDoApp.Core.Models
                 }
             }
         }
-
-        public bool IsCompleted { get; set; }
-        public bool TaskProgress { get; set; }
+        public bool IsCompleted { get; set; }// zmienic nazwe z IsCompleted na np. IsMarked
+        public bool TaskProgress
+        {
+            get => _taskProgress;
+            set
+            {
+                if (_taskProgress != value)
+                {
+                    _taskProgress = value;
+                    OnPropertyChanged(nameof(TaskProgress));
+                    ShowProgressFields = value; // <- dodaj to, jeśli jeszcze nie masz
+                }
+            }
+        }
         public DateTime? FinishDate
         {
             get => _finishDate;
@@ -81,26 +93,56 @@ namespace ToDoApp.Core.Models
             }
         }
         public int? TotalDays => FinishDate.HasValue ? (FinishDate.Value - StartDate).Days : null;
-
         public int DaysLeft => FinishDate.HasValue ? (FinishDate.Value - DateTime.Now).Days : 0;
-
-        public string ProgressAsText => FinishDate.HasValue ? $"{(TotalDays - DaysLeft)}/{TotalDays}" : string.Empty;
-
+        public string ProgressAsText => $"{ProgressCurrentInt}/{ProgressMaxInt}";
         public string ProgressAsDaysLeft => FinishDate.HasValue ? $"Zostało {DaysLeft} dni do końca" : string.Empty;
-        public int ProgressMaxInt { get; set; }
-        public int ProgressCurrentInt { get; set; }
-        public string? ProgressString { get; set; }
-
-        private bool _showProgressFields = false;
+        public int ProgressMaxInt
+        {
+            get => _progressMaxInt;
+            set
+            {
+                _progressMaxInt = value;
+                OnPropertyChanged(nameof(ProgressMaxInt));
+                OnPropertyChanged(nameof(ProgressAsText));
+            }
+        }      
+        public int ProgressCurrentInt
+        {
+            get => _progressCurrentInt;
+            set
+            {
+                _progressCurrentInt = value;
+                OnPropertyChanged(nameof(ProgressCurrentInt));
+                OnPropertyChanged(nameof(ProgressAsText));
+            }
+        }
+        public string? ProgressString
+        {
+            get => _progressString;
+            set
+            {
+                if (_progressString != value)
+                {
+                    _progressString = value;
+                    OnPropertyChanged(nameof(ProgressString));
+                    OnPropertyChanged(nameof(HasTaskStringProgress));
+                }
+            }
+        }
+        public bool HasTaskStringProgress => !string.IsNullOrWhiteSpace(ProgressString);
         public bool ShowProgressFields
         {
             get => _showProgressFields;
             set
             {
-                _showProgressFields = value;
-                OnPropertyChanged(nameof(ShowProgressFields));
+                if (_showProgressFields != value)
+                {
+                    _showProgressFields = value;
+                    OnPropertyChanged(nameof(ShowProgressFields));
+                }
             }
         }
+        public bool IsFinished { get; set; }
 
         public TaskItem(string title, string description, DateTime startTime, bool isMarkded)
         {

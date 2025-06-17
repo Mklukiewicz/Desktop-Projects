@@ -29,9 +29,11 @@ namespace ToDoApp.UI.Pages
 
             var homePage = new HomePage { DataContext = SharedViewModel };
             var listPage = new ListOfTasksPage { DataContext = SharedViewModel };
+            var finishedTasksListPage = new FinishedTasksPage { DataContext = SharedViewModel };
 
             HomeTab.Content = homePage;
             ListTab.Content = listPage;
+            FinishedTasksTab.Content = finishedTasksListPage;
         }
     }
 }
