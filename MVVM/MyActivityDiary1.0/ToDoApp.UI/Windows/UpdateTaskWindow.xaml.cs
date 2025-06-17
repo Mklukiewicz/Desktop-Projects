@@ -25,7 +25,7 @@ namespace ToDoApp.UI.Windows
             InitializeComponent();
         }
 
-        private void UpdateButton_Click(object sender, RoutedEventArgs e)// zebranie danych z okna
+        private void UpdateButton_Click(object sender, RoutedEventArgs e)
         {
             if (DataContext is TaskItem task)
             {              

@@ -173,18 +173,14 @@ namespace ToDoApp.UI.ViewModels
         {
             DeleteTaskItemCommand = new RelayCommand(DeleteTaskItem);
             OpenAddTaskWindowCommand = new RelayCommand(OpenAddTaskWindow);
-            //OpenInfoWindowCommand = new RelayCommandGeneric<TaskItem>(OpenInfoWindow);
             OpenUpdateWindowCommand = new RelayCommandParam(OpenUpdateWindow);
-            //SaveTaskCommand = new RelayCommand(SaveTask);
         }
         public ObservableCollection<TaskItem> TaskItems { get; set; } = new ObservableCollection<TaskItem>();
 
-        public  ICommand AddNewTaskItemCommand { get; set; }
         public  ICommand DeleteTaskItemCommand { get; set; }
         public  ICommand OpenAddTaskWindowCommand { get; set; }
-        //public  ICommand OpenInfoWindowCommand { get; set; }
         public  ICommand OpenUpdateWindowCommand { get; set; }
-        //public  ICommand SaveTaskCommand { get; set; }
+
        
         private void DeleteTaskItem()
         {
@@ -211,7 +207,7 @@ namespace ToDoApp.UI.ViewModels
             }
         }
 
-        private void OpenUpdateWindow( object? parameter)// w zadaniu mozna dodać również regress
+        private void OpenUpdateWindow(object? parameter)// w zadaniu mozna dodać również regress
         {
             if (parameter is TaskItem taskItem)
             {
@@ -222,35 +218,7 @@ namespace ToDoApp.UI.ViewModels
 
                 window.ShowDialog();
             }
-            ////if (parameter is Tuple<object, object> tuple &&
-            ////     tuple.Item1 is TaskItem taskItem &&
-            ////     tuple.Item2 is Window infoWindow)
-            ////{ 
-            //    //infoWindow.Close();
-
-            //    var window = new UpdateTaskWindow
-            //    {
-            //        DataContext = taskItem
-            //    };
-
-            //    window.TitleTextBox.Text = taskItem.Title;
-            //    window.DescriptionTextBox.Text = taskItem.Description;
-            //    window.DateTextBox.Text = taskItem.StartDate.ToString();
-
-            //    window.ShowDialog();
-            //}
         }
-
-        //private void OpenInfoWindow(TaskItem taskItem)// w zadaniu mozna dodać również regress
-        //{
-        //    var window = new TaskInfoWindow()
-        //    {
-        //        DataContext = taskItem,
-        //        ParentViewModel = this
-        //    };
-
-        //    window.ShowDialog();
-        //}
 
         public event PropertyChangedEventHandler? PropertyChanged;
         protected void OnPropertyChanged(string name)
@@ -304,21 +272,6 @@ namespace ToDoApp.UI.ViewModels
             {
                 StringProgressError = null;
             }
-        }
-
-        //private void SaveTask()
-        //{
-        //    if(HasTaskProgress == true)
-        //    {
-        //        BuiltTask = new TaskItem(TaskItemViewModelTitle, TaskItemViewModelDescription, TaskItemViewModelStartDate.Value, TaskItemViewModelFinishDate.Value,
-        //        false, true, MaxProgress, CurrentProgress, TaskStringProgress);
-        //        //TaskItems.Add(newTaskItem);
-        //    }
-        //    else
-        //    {
-        //        BuiltTask = new TaskItem(TaskItemViewModelTitle, TaskItemViewModelDescription,TaskItemViewModelStartDate.Value, false);
-        //        //TaskItems.Add(newTaskItem);
-        //    }
-        //}
+        }       
     }
 }

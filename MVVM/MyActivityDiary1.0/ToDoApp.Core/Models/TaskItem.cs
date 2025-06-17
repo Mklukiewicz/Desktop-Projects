@@ -80,7 +80,6 @@ namespace ToDoApp.Core.Models
                 }
             }
         }
-        //public int CurrentProgressDay { get; set; }
         public int? TotalDays => FinishDate.HasValue ? (FinishDate.Value - StartDate).Days : null;
 
         public int DaysLeft => FinishDate.HasValue ? (FinishDate.Value - DateTime.Now).Days : 0;

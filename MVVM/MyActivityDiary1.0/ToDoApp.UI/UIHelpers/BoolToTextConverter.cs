@@ -15,7 +15,7 @@ namespace ToDoApp.UI.UIHelpers
             if (value is bool boolValue)
                 return boolValue ? "Tak" : "Nie";
 
-            return "Nie"; // lub np. string.Empty albo null – w zależności od kontekstu
+            return "Nie";
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
