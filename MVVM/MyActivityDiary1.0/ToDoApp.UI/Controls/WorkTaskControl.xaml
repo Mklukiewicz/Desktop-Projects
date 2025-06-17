@@ -35,15 +35,17 @@
             <!-- Wiersz 2: Postęp i przycisk -->
             <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal" Margin="0,6,0,0"
                         Visibility="{Binding TaskProgress, Converter={StaticResource BoolToVisibilityConverter}}">
-                <TextBlock Text="{Binding ProgressAsText}" Margin="0,0,15,0"/>
-                <TextBlock Text="{Binding ProgressAsDaysLeft}"/>
+                <TextBlock Text="{Binding ProgressAsText, StringFormat='{}{0} jednostek'}" Margin="0,0,15,0"/>
+                <TextBlock Text="{Binding ProgressAsDaysLeft, StringFormat='{}{0}   '}"/>
+                <TextBlock Text="{Binding ProgressString}"                           
+                           Visibility="{Binding HasTaskStringProgress, Converter={StaticResource BoolToVisibilityConverter}}"/>
             </StackPanel>
 
             <Button Grid.Row="2" Grid.Column="2"
-                    Content="Info"
+                    Content="Aktualizuj"
                     Width="100"
-                    Margin="10,5,0,0"
-                    Command="{Binding DataContext.OpenInfoWindowCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                    Margin="10,5,0,0"                   
+                    Command="{Binding DataContext.OpenUpdateWindowCommand, RelativeSource={RelativeSource AncestorType=UserControl, AncestorLevel=2}}"
                     CommandParameter="{Binding}" />
         </Grid>
     </Border>

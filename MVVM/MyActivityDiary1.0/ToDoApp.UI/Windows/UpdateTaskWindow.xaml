@@ -3,17 +3,93 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:ToDoApp.UI.Windows"
+        xmlns:helper="clr-namespace:ToDoApp.UI.UIHelpers"
         mc:Ignorable="d"
-        Title="UpdateTaskWindow" Height="450" Width="800">
-    <Grid>
-        <StackPanel Margin="20">
-            <TextBox x:Name="TitleTextBox"   Margin="0,10"/>
-            <TextBox x:Name="DescriptionTextBox"  Margin="0,10"/>
-            <TextBox x:Name="DateTextBox"  Margin="0,10"/>
-            <TextBox x:Name="ProgressTextBox"  Margin="0,10"/>
-            <Button Content="Aktualizuj" Click="UpdateButton_Click"/>
-            <Button Content="Zamknij" Click="Close_Click"/>
+        Title="Aktualizuj Zadanie"
+        Height="370" Width="500"
+        MinHeight="370" MinWidth="500"
+        MaxHeight="370" MaxWidth="500"
+        ResizeMode="NoResize">
+
+    <Window.Resources>
+        <helper:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+    </Window.Resources>
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <!-- Checkbox -->
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="150"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Tytuł -->
+        <TextBlock Text="Tytuł:" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" />
+        <TextBox Text="{Binding Title}" Grid.Row="0" Grid.Column="1" Margin="5" />
+
+        <!-- Opis -->
+        <TextBlock Text="Opis:" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" />
+        <TextBox Text="{Binding Description}" Grid.Row="1" Grid.Column="1" Margin="5" />
+
+        <!-- Data rozpoczęcia -->
+        <TextBlock Text="Data rozpoczęcia:" Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" />
+        <DatePicker SelectedDate="{Binding StartDate}" Grid.Row="2" Grid.Column="1" Margin="5" />
+
+        <!-- Checkbox dodania postępu -->
+        <CheckBox Content="Czy dodać postęp do zadania?"  Grid.Row="3" Grid.ColumnSpan="2" Margin="5"
+          IsChecked="{Binding TaskProgress}" />
+
+        <!-- Data zakończenia -->
+        <TextBlock Text="Data zakończenia:" Grid.Row="4" Grid.Column="0" VerticalAlignment="Center"
+                   Visibility="{Binding TaskProgress, Converter={StaticResource BoolToVisibilityConverter}}" />
+        <DatePicker SelectedDate="{Binding FinishDate}" Grid.Row="4" Grid.Column="1" Margin="5"
+                    Visibility="{Binding TaskProgress, Converter={StaticResource BoolToVisibilityConverter}}" />
+
+        <!-- Postęp liczbowy -->
+        <TextBlock Text="Aktualny postęp:" Grid.Row="5" Grid.Column="0" VerticalAlignment="Center"
+                   Visibility="{Binding TaskProgress, Converter={StaticResource BoolToVisibilityConverter}}" />
+        <TextBox Text="{Binding ProgressCurrentInt}" Grid.Row="5" Grid.Column="1" Margin="5"
+                 Visibility="{Binding TaskProgress, Converter={StaticResource BoolToVisibilityConverter}}" />
+
+        <TextBlock Text="Maksymalny postęp:" Grid.Row="6" Grid.Column="0" VerticalAlignment="Center"
+                   Visibility="{Binding TaskProgress, Converter={StaticResource BoolToVisibilityConverter}}" />
+        <TextBox Text="{Binding ProgressMaxInt}" Grid.Row="6" Grid.Column="1" Margin="5"
+                 Visibility="{Binding TaskProgress, Converter={StaticResource BoolToVisibilityConverter}}" />
+
+        <!-- Postęp opisowy -->
+        <TextBlock Text="Postęp opisowy:" Grid.Row="7" Grid.Column="0" VerticalAlignment="Center"
+                   Visibility="{Binding TaskProgress, Converter={StaticResource BoolToVisibilityConverter}}" />
+        <TextBox Text="{Binding ProgressString}" Grid.Row="7" Grid.Column="1" Margin="5"
+                 Visibility="{Binding TaskProgress, Converter={StaticResource BoolToVisibilityConverter}}" />
+
+        <!-- Przyciski -->
+        <StackPanel Orientation="Horizontal"
+            Grid.Row="9"
+            Grid.ColumnSpan="2"
+            HorizontalAlignment="Right"
+            Margin="0,20,0,0">
+            <Button Content="Aktualizuj"
+            Click="UpdateButton_Click"
+            Width="100"
+            Height="35"
+            Margin="0,0,10,0"/>
+            <Button Content="Zamknij"
+            Click="Close_Click"
+            Width="100"
+            Height="35"/>
         </StackPanel>
     </Grid>
 </Window>
+

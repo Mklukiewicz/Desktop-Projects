@@ -80,7 +80,7 @@ namespace ToDoApp.Core.Models
                 }
             }
         }
-        public int CurrentProgressDay { get; set; }
+        //public int CurrentProgressDay { get; set; }
         public int? TotalDays => FinishDate.HasValue ? (FinishDate.Value - StartDate).Days : null;
 
         public int DaysLeft => FinishDate.HasValue ? (FinishDate.Value - DateTime.Now).Days : 0;
@@ -91,7 +91,18 @@ namespace ToDoApp.Core.Models
         public int ProgressMaxInt { get; set; }
         public int ProgressCurrentInt { get; set; }
         public string? ProgressString { get; set; }
-     
+
+        private bool _showProgressFields = false;
+        public bool ShowProgressFields
+        {
+            get => _showProgressFields;
+            set
+            {
+                _showProgressFields = value;
+                OnPropertyChanged(nameof(ShowProgressFields));
+            }
+        }
+
         public TaskItem(string title, string description, DateTime startTime, bool isMarkded)
         {
             Title = title;
