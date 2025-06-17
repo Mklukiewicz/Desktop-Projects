@@ -12,7 +12,8 @@ namespace ToDoApp.Core.Models
     {
         public int Id { get; set; }// to bedzie wykorzystane do bazy danych 
 
-        private string _title = string.Empty;// priorytetowośc zadania
+        private string _title = string.Empty;// priorytetowośc zadania trzeba zaznaczyć jak ważne jest zadanie,
+                                             // na pierwszej stronie mają się wyświetlać tylko priorytetowe zadania
 
         private string _description = string.Empty;
 
@@ -88,22 +89,34 @@ namespace ToDoApp.Core.Models
 
         public string ProgressAsDaysLeft => FinishDate.HasValue ? $"Zostało {DaysLeft} dni do końca" : string.Empty;
         public int ProgressMaxInt { get; set; }
-        public int ProgressCurrentInt { get; set; }// trzeba pamietac że current progress musi byc zawsze mniejszy niż max progress
+        public int ProgressCurrentInt { get; set; }
         public string? ProgressString { get; set; }
      
-        public TaskItem(string title, string description, DateTime dueTime, bool isMarkded)
+        public TaskItem(string title, string description, DateTime startTime, bool isMarkded)
         {
             Title = title;
             Description = description;
-            StartDate = dueTime;
+            StartDate = startTime;
             IsCompleted = isMarkded;
         }
 
-        public bool IsOverdue => !IsCompleted && StartDate.Date < DateTime.Now.Date;//metoda sprawdzajaca czy zadanie jest zaległe, niepotrzebne usunać
+        public TaskItem(string title, string description, DateTime startTime, DateTime finishDate, bool isMarkded,bool taskProgress,
+            int progressMaxInt, int progressCurrentInt, string progressString)
+        {
+            Title = title;
+            Description = description;
+            StartDate = startTime;
+            FinishDate = finishDate;
+            IsCompleted = isMarkded;
+            TaskProgress = taskProgress;
+            ProgressMaxInt = progressMaxInt;
+            ProgressCurrentInt = progressCurrentInt;
+            ProgressString = progressString;
+        }
 
         public event PropertyChangedEventHandler? PropertyChanged;
       
-        protected void OnPropertyChanged(string propertyName)// metoda pomocniczna wywołująca event change 
+        protected void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }

@@ -12,6 +12,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using ToDoApp.Core.Models;
+using ToDoApp.UI.ViewModels;
 
 namespace ToDoApp.UI.Windows
 {
@@ -23,6 +25,25 @@ namespace ToDoApp.UI.Windows
         public AdjustTaskWindow()
         {
             InitializeComponent();
-        }       
+        }
+
+        private void SaveButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is TaskItemViewModel vm)
+            {
+                vm.BuiltTask = new TaskItem(
+                    vm.TaskItemViewModelTitle,
+                    vm.TaskItemViewModelDescription ?? "",
+                    vm.TaskItemViewModelStartDate ?? DateTime.Today,
+                    vm.TaskItemViewModelFinishDate ?? DateTime.Today,
+                     false,
+                    taskProgress: true,
+                    progressMaxInt: vm.MaxProgress,
+                    progressCurrentInt: vm.CurrentProgress,
+                    progressString: vm.TaskStringProgress ?? string.Empty
+                );
+            }
+                DialogResult = true;
+        }
     }
 }

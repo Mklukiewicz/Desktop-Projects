@@ -19,11 +19,9 @@
                 <RadioButton Content="Tak" IsChecked="{Binding HasTaskFinishDateProgress}" GroupName="FinishDate" Margin="0,0,10,0" />
                 <RadioButton Content="Nie" IsChecked="{Binding HasTaskFinishDateProgress, Converter={StaticResource InvertBoolConverter}}" GroupName="FinishDate" />
             </StackPanel>
-            <DatePicker SelectedDate="{Binding FinishDate}" Visibility="{Binding HasTaskFinishDateProgress, Converter={StaticResource BoolToVisibilityConverter}}" />
-
+            <DatePicker SelectedDate="{Binding TaskItemViewModelFinishDate}" Visibility="{Binding HasTaskFinishDateProgress, Converter={StaticResource BoolToVisibilityConverter}}" />
             <TextBlock Text="Zadanie będzie trwało:" Visibility="{Binding HasTaskFinishDateProgress, Converter={StaticResource BoolToVisibilityConverter}}" Margin="0,5"/>
             <TextBlock Text="{Binding TotalDaysLeft, StringFormat='{}{0} dni do końca'}" Visibility="{Binding HasTaskFinishDateProgress, Converter={StaticResource BoolToVisibilityConverter}}" Margin="0,0,0,15"/>
-
             <TextBlock Text="{Binding DateValidationError}" 
                        Foreground="Red" 
                        Visibility="{Binding HasDateError, Converter={StaticResource BoolToVisibilityConverter}}" 
@@ -39,6 +37,10 @@
                 <TextBox Text="{Binding CurrentProgress}" />
                 <TextBlock Text="Maksymalny postęp:" />
                 <TextBox Text="{Binding MaxProgress}" />
+                <TextBlock Text="{Binding ProgressValidationError}" 
+                           Foreground="Red" 
+                           Visibility="{Binding HasProgressError, Converter={StaticResource BoolToVisibilityConverter}}" 
+                           Margin="0,5,0,0"/>
             </StackPanel>
 
             <!--POSTĘP OPISOWY-->
@@ -47,10 +49,13 @@
                 <RadioButton Content="Tak" IsChecked="{Binding HasTaskStringProgress}" GroupName="StringProgress" Margin="0,0,10,0" />
                 <RadioButton Content="Nie" IsChecked="{Binding HasTaskStringProgress, Converter={StaticResource InvertBoolConverter}}" GroupName="StringProgress" />
             </StackPanel>
-            <TextBox Text="{Binding DescriptionProgress}" Visibility="{Binding HasTaskStringProgress, Converter={StaticResource BoolToVisibilityConverter}}" />
-
+            <TextBox Text="{Binding TaskStringProgress}" Visibility="{Binding HasTaskStringProgress, Converter={StaticResource BoolToVisibilityConverter}}" />
+            <TextBlock Text="{Binding StringProgressError}" 
+                       Foreground="Red" 
+                       Visibility="{Binding HasStringProgressError, Converter={StaticResource BoolToVisibilityConverter}}" 
+                       Margin="0,5,0,0"/>
             <Button Content="Zapisz" 
-                    IsEnabled="{Binding HasDateError, Converter={StaticResource InvertBoolConverter}}" />
+                    IsEnabled="{Binding CanSave}" Click="SaveButton_Click" Command="{Binding SaveTaskWithProgressCommand}" />
         </StackPanel>
     </Grid>
 </Window>

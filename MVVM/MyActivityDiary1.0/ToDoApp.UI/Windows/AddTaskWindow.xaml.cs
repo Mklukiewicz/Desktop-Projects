@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using ToDoApp.Core.Models;
 using ToDoApp.UI.ViewModels;
 
 namespace ToDoApp.UI.Windows
@@ -28,22 +29,34 @@ namespace ToDoApp.UI.Windows
 
         private void AddButton_Click(object sender, RoutedEventArgs e)
         {
-            var vm = this.DataContext as TaskItemViewModel;
-
-            if (vm.HasTaskProgress == true)
+            if (DataContext is TaskItemViewModel vm)
             {
-                var adjust = new AdjustTaskWindow()
+                if (vm.HasTaskProgress == true)
                 {
-                    DataContext = vm
-                };
-                adjust.ShowDialog();
-            }
-            else
-            {
-                DialogResult = true;
-                Close();
-            }
-             
+                    var adjustWindow = new AdjustTaskWindow
+                    {
+                        DataContext = vm,
+                        Owner = this
+                    };
+                    if (adjustWindow.ShowDialog() == true && vm.BuiltTask != null)
+                    {
+                        DialogResult = true;
+                        Close();
+                    }
+                }
+                else
+                {
+                    vm.BuiltTask = new TaskItem(
+                        vm.TaskItemViewModelTitle,
+                        vm.TaskItemViewModelDescription ?? "",
+                        vm.TaskItemViewModelStartDate ?? DateTime.Today,
+                        false
+                    );
+
+                    DialogResult = true;
+                    Close();
+                }
+            }            
         }
     }
 }

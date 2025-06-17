@@ -1,5 +1,4 @@
-﻿//using GalaSoft.MvvmLight.Command;
-using GalaSoft.MvvmLight.Helpers;
+﻿using GalaSoft.MvvmLight.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -24,13 +23,20 @@ namespace ToDoApp.UI.ViewModels
         private DateTime? _startDate;
         private DateTime? _finishDate;
         private int _totalDaysLeft;
+        private int _currentProgress;
+        private int _maxProgress;
+        private string? _progressValidationError;
+        private bool _hasTaskIntProgress;
+        private bool _hasTaskFinishDateProgress;
+        private bool _hasTaskStringProgress;
+        private string _taskStringProgress;
+        private string? _stringProgressError;
 
         public string TaskItemViewModelTitle { get; set; }
         public string? TaskItemViewModelDescription { get; set; }
-        public DateTime? TaskItemViewModelStartTime { get; set; }
         public bool TaskItemViewModelIsChecked { get; set; }
-        public bool? HasTaskProgress { get; set; }
-        private bool _hasTaskFinishDateProgress;
+        public bool CanSave => !HasDateError && !HasProgressError && !HasStringProgressError;
+        public bool? HasTaskProgress { get; set; }      
         public bool HasTaskFinishDateProgress
         {
             get => _hasTaskFinishDateProgress;
@@ -41,27 +47,43 @@ namespace ToDoApp.UI.ViewModels
                 CalculateTotalDays();
             }
         }
-
-        public bool? HasTaskIntProgress { get; set; }
-        public bool? HasTaskStringProgress { get; set; }
-        public DateTime? StartDate
+        public bool HasTaskIntProgress
+        {
+            get => _hasTaskIntProgress;
+            set
+            {
+                _hasTaskIntProgress = value;
+                OnPropertyChanged(nameof(HasTaskIntProgress));
+            }
+        }
+        public bool HasTaskStringProgress
+        {
+            get => _hasTaskStringProgress;
+            set
+            {
+                _hasTaskStringProgress = value;
+                OnPropertyChanged(nameof(HasTaskStringProgress));
+                ValidateStringProgress();
+            }
+        }
+        public DateTime? TaskItemViewModelStartDate
         {
             get => _startDate ?? DateTime.Today;
             set
             {
                 _startDate = value;
-                OnPropertyChanged(nameof(StartDate));
+                OnPropertyChanged(nameof(TaskItemViewModelStartDate));
                 OnPropertyChanged(nameof(TotalDaysLeft));
             }
         }
 
-        public DateTime? FinishDate
+        public DateTime? TaskItemViewModelFinishDate
         {
             get => _finishDate;
             set
             {
                 _finishDate = value;
-                OnPropertyChanged(nameof(FinishDate));
+                OnPropertyChanged(nameof(TaskItemViewModelFinishDate));
                 CalculateTotalDays();
             }
         }
@@ -85,12 +107,67 @@ namespace ToDoApp.UI.ViewModels
                 _dateValidationError = value;
                 OnPropertyChanged(nameof(DateValidationError));
                 OnPropertyChanged(nameof(HasDateError));
+                OnPropertyChanged(nameof(CanSave));
+            }
+        }       
+        public int CurrentProgress
+        {
+            get => _currentProgress;
+            set
+            {
+                _currentProgress = value;
+                OnPropertyChanged(nameof(CurrentProgress));
+                ValidateProgress();
             }
         }
-
+        public int MaxProgress
+        {
+            get => _maxProgress;
+            set
+            {
+                _maxProgress = value;
+                OnPropertyChanged(nameof(MaxProgress));
+                ValidateProgress();
+            }
+        }
+        public string? ProgressValidationError
+        {
+            get => _progressValidationError;
+            set
+            {
+                _progressValidationError = value;
+                OnPropertyChanged(nameof(ProgressValidationError));
+                OnPropertyChanged(nameof(HasProgressError));
+                OnPropertyChanged(nameof(CanSave));
+            }
+        }
+        public string TaskStringProgress
+        {
+            get => _taskStringProgress;
+            set
+            {
+                _taskStringProgress = value;
+                OnPropertyChanged(nameof(TaskStringProgress));
+                ValidateStringProgress();
+                
+            }
+        }        
+        public string? StringProgressError
+        {
+            get => _stringProgressError;
+            set
+            {
+                _stringProgressError = value;
+                OnPropertyChanged(nameof(StringProgressError));
+                OnPropertyChanged(nameof(HasStringProgressError));
+                OnPropertyChanged(nameof(CanSave));
+            }
+        }
+        public bool HasStringProgressError => !string.IsNullOrEmpty(StringProgressError);
+        public bool HasProgressError => !string.IsNullOrEmpty(ProgressValidationError);
         public bool HasDateError => !string.IsNullOrEmpty(DateValidationError);
-
-        
+        public Action? OpenAdjustWindowCallback { get; set; }
+        public TaskItem? BuiltTask { get; set; }
 
         public TaskItemViewModel()
         {
@@ -98,6 +175,7 @@ namespace ToDoApp.UI.ViewModels
             OpenAddTaskWindowCommand = new RelayCommand(OpenAddTaskWindow);
             OpenInfoWindowCommand = new RelayCommandGeneric<TaskItem>(OpenInfoWindow);
             OpenUpdateWindowCommand = new RelayCommandParam(OpenUpdateWindow);
+            SaveTaskCommand = new RelayCommand(SaveTask);
         }
         public ObservableCollection<TaskItem> TaskItems { get; set; } = new ObservableCollection<TaskItem>();
 
@@ -106,6 +184,7 @@ namespace ToDoApp.UI.ViewModels
         public  ICommand OpenAddTaskWindowCommand { get; set; }
         public  ICommand OpenInfoWindowCommand { get; set; }
         public  ICommand OpenUpdateWindowCommand { get; set; }
+        public  ICommand SaveTaskCommand { get; set; }
        
         private void DeleteTaskItem()
         {
@@ -119,32 +198,17 @@ namespace ToDoApp.UI.ViewModels
 
         private void OpenAddTaskWindow()
         {
-            var newTaskVm = new TaskItemViewModel();
+            var vm = new TaskItemViewModel(); // tylko jeden VM
 
-            var window = new AddTaskWindow()
+            var addWindow = new AddTaskWindow
             {
-                DataContext = newTaskVm
+                DataContext = vm
             };
-                    
-            if (window.ShowDialog() == true)
+
+            if (addWindow.ShowDialog() == true && vm.BuiltTask != null)
             {
-               var newTask = new TaskItem(newTaskVm.TaskItemViewModelTitle, newTaskVm.TaskItemViewModelDescription, newTaskVm.StartDate.Value, false);
-
-                var vm = window.DataContext as TaskItemViewModel;
-
-                if (vm != null && vm.HasTaskProgress == true)
-                {
-                    var adjustWindow = new AdjustTaskWindow
-                    {
-                        DataContext = vm
-                    };
-                    adjustWindow.ShowDialog();
-                }
-                else
-                {
-                    TaskItems.Add(newTask);
-                }
-            }                     
+                TaskItems.Add(vm.BuiltTask);
+            }
         }
 
         private void OpenUpdateWindow( object? parameter)
@@ -187,9 +251,9 @@ namespace ToDoApp.UI.ViewModels
 
         private void CalculateTotalDays()
         {
-            if (StartDate.HasValue && FinishDate.HasValue)
+            if (TaskItemViewModelStartDate.HasValue && TaskItemViewModelFinishDate.HasValue)
             {
-                if (FinishDate.Value < StartDate.Value)
+                if (TaskItemViewModelFinishDate.Value < TaskItemViewModelStartDate.Value)
                 {
                     DateValidationError = "Data zakończenia nie może być wcześniejsza niż data rozpoczęcia.";
                     _totalDaysLeft = 0;
@@ -198,7 +262,7 @@ namespace ToDoApp.UI.ViewModels
                 }
 
                 DateValidationError = null;
-                _totalDaysLeft = (FinishDate.Value - StartDate.Value).Days;
+                _totalDaysLeft = (TaskItemViewModelFinishDate.Value - TaskItemViewModelStartDate.Value).Days;
                 OnPropertyChanged(nameof(TotalDaysLeft));
             }
             else
@@ -209,5 +273,43 @@ namespace ToDoApp.UI.ViewModels
             }
         }
 
+        private void ValidateProgress()
+        {
+            if (MaxProgress < CurrentProgress)
+            {
+                ProgressValidationError = "Maksymalny postęp nie może być mniejszy niż aktualny.";
+            }
+            else
+            {
+                ProgressValidationError = null;
+            }
+        }
+
+        private void ValidateStringProgress()
+        {
+            if (HasTaskStringProgress && string.IsNullOrWhiteSpace(TaskStringProgress))
+            {
+                StringProgressError = "Postęp opisowy nie może być pusty.";
+            }
+            else
+            {
+                StringProgressError = null;
+            }
+        }
+
+        private void SaveTask()
+        {
+            if(HasTaskProgress == true)
+            {
+                BuiltTask = new TaskItem(TaskItemViewModelTitle, TaskItemViewModelDescription, TaskItemViewModelStartDate.Value, TaskItemViewModelFinishDate.Value,
+                false, true, MaxProgress, CurrentProgress, TaskStringProgress);
+                //TaskItems.Add(newTaskItem);
+            }
+            else
+            {
+                BuiltTask = new TaskItem(TaskItemViewModelTitle, TaskItemViewModelDescription,TaskItemViewModelStartDate.Value, false);
+                //TaskItems.Add(newTaskItem);
+            }
+        }
     }
 }

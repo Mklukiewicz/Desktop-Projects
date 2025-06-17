@@ -9,32 +9,39 @@
 
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <!-- Nagłówek -->
             <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
+            <!-- Lista zadań -->
+            <RowDefinition Height="Auto"/>
+            <!-- Przyciski -->
         </Grid.RowDefinitions>
-        <StackPanel>
-            <TextBlock Text="Bieżące Zadania" 
-           HorizontalAlignment="Center" 
-           VerticalAlignment="Center" 
-           FontSize="20" Grid.Row="0" />
-            <StackPanel Grid.Row="1">
-                <ItemsControl ItemsSource="{Binding TaskItems}" >
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <controls:WorkTaskControl/>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-            </StackPanel>
 
-            <Grid Grid.Row="2">
-                <StackPanel Orientation="Horizontal">
-                    <Button Content="Dodaj Zadanie" Command="{Binding OpenAddTaskWindowCommand}" Width="100"/>
-                    <Button Content="Usuń" Command="{Binding DeleteTaskItemCommand}" Width="100"/>
-                </StackPanel>
-            </Grid>
+        <TextBlock Text="Bieżące Zadania" 
+               HorizontalAlignment="Center"
+               FontSize="20"
+               Grid.Row="0" 
+               Margin="10"/>
+
+        <ScrollViewer Grid.Row="1">
+            <ItemsControl ItemsSource="{Binding TaskItems}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <controls:WorkTaskControl/>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="10">
+            <Button Content="Dodaj Zadanie" 
+                Command="{Binding OpenAddTaskWindowCommand}" 
+                Width="120" 
+                Margin="5"/>
+            <Button Content="Usuń" 
+                Command="{Binding DeleteTaskItemCommand}" 
+                Width="120" 
+                Margin="5"/>
         </StackPanel>
-        
     </Grid>
 </UserControl>
