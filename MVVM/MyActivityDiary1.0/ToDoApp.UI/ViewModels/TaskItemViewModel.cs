@@ -248,6 +248,7 @@ namespace ToDoApp.UI.ViewModels
             if (addWindow.ShowDialog() == true && vm.BuiltTask != null)
             {
                 TaskItems.Add(vm.BuiltTask);
+                SortTasksByPriority();
             }
         }
 
@@ -275,7 +276,11 @@ namespace ToDoApp.UI.ViewModels
                     DataContext = vm
                 };
 
-                window.ShowDialog();
+                var result = window.ShowDialog();
+                if (result == true)
+                {
+                    SortTasksByPriority();
+                }
             }
         }
 
@@ -341,7 +346,18 @@ namespace ToDoApp.UI.ViewModels
                     FinishedTaskItems.Add(taskItemToFinish);
 
                 TaskItems.Remove(taskItemToFinish);
+                SortTasksByPriority();
             }          
+        }
+        private void SortTasksByPriority()
+        {
+            var sorted = TaskItems.OrderByDescending(t => t.Priority).ToList();
+
+            TaskItems.Clear();
+            foreach (var task in sorted)
+            {
+                TaskItems.Add(task);
+            }
         }
     }
 }

@@ -54,7 +54,6 @@ namespace ToDoApp.UI.Windows
                         false,
                         (TaskPriority)vm.Priority
                     );
-
                     DialogResult = true;
                     Close();
                 }
