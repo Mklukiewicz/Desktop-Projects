@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using ToDoApp.Core.Models;
 using ToDoApp.UI.ViewModels;
+using static ToDoApp.Core.Models.TaskItem;
 
 namespace ToDoApp.UI.Windows
 {
@@ -40,7 +41,8 @@ namespace ToDoApp.UI.Windows
                     taskProgress: true,
                     progressMaxInt: vm.MaxProgress,
                     progressCurrentInt: vm.CurrentProgress,
-                    progressString: vm.TaskStringProgress ?? string.Empty
+                    progressString: vm.TaskStringProgress ?? string.Empty,
+                    (TaskPriority)vm.Priority
                 );
             }
                 DialogResult = true;

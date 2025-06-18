@@ -46,15 +46,19 @@
                     Command="{Binding DataContext.FinishTaskItemCommand, RelativeSource={RelativeSource AncestorType=UserControl, AncestorLevel=2}}"
                     CommandParameter="{Binding}" />
 
-            <!-- Wiersz 2: Postęp -->
-            <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal" Margin="0,6,0,0"
-                        Visibility="{Binding TaskProgress, Converter={StaticResource BoolToVisibilityConverter}}">
-                <TextBlock Text="{Binding ProgressAsText, StringFormat='{}{0} jednostek'}" Margin="0,0,15,0"/>
-                <TextBlock Text="{Binding ProgressAsDaysLeft, StringFormat='{}{0}   '}"/>
-                <TextBlock Text="{Binding ProgressString}"                           
-                           Visibility="{Binding HasTaskStringProgress, Converter={StaticResource BoolToVisibilityConverter}}"/>
-            </StackPanel>
+            <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal" Margin="0,6,0,0">
+                <!-- Priorytet: zawsze widoczny -->
+                <TextBlock Text="{Binding PriorityAsText}" 
+               Foreground="DarkRed" FontWeight="Bold" Margin="0,0,15,0"/>
 
+                <!-- Postęp: widoczny tylko jeśli TaskProgress -->
+                <StackPanel Orientation="Horizontal" Visibility="{Binding TaskProgress, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <TextBlock Text="{Binding ProgressAsText, StringFormat='{}{0} jednostek'}" Margin="0,0,15,0"/>
+                    <TextBlock Text="{Binding ProgressAsDaysLeft, StringFormat='{}{0}'}" Margin="0,0,15,0"/>
+                    <TextBlock Text="{Binding ProgressString}" 
+                   Visibility="{Binding HasTaskStringProgress, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                </StackPanel>
+            </StackPanel>
             <!-- Wiersz 3: Aktualizuj -->
             <Button Grid.Row="3" Grid.Column="2"
                     Content="Aktualizuj"

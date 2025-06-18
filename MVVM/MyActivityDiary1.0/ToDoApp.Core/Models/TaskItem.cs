@@ -17,8 +17,8 @@ namespace ToDoApp.Core.Models
         private string? _progressString;
         public int Id { get; set; }// to bedzie wykorzystane do bazy danych 
 
-        private string _title = string.Empty;// priorytetowośc zadania trzeba zaznaczyć jak ważne jest zadanie,
-                                             // na pierwszej stronie mają się wyświetlać tylko priorytetowe zadania
+        private string _title = string.Empty;// lista sortować po priorytetowsci
+                                             
         private string _description = string.Empty;
         private DateTime _startDate;
         private DateTime? _finishDate;
@@ -143,17 +143,51 @@ namespace ToDoApp.Core.Models
             }
         }
         public bool IsFinished { get; set; }
+        public enum TaskPriority
+        {
+            Low = 1,        
+            BelowNormal,    
+            Normal,         
+            AboveNormal,    
+            High            
+        }
+        private TaskPriority _priority;
+        public TaskPriority Priority
+        {
+            get => _priority;
+            set
+            {
+                if (_priority != value)
+                {
+                    _priority = value;
+                    OnPropertyChanged(nameof(Priority));
+                    OnPropertyChanged(nameof(PriorityAsText));
+                }
+            }
+        }
 
-        public TaskItem(string title, string description, DateTime startTime, bool isMarkded)
+        public static Dictionary<TaskPriority, string> PriorityDisplayNames => new()
+        {
+            { TaskPriority.Low, "Zerowy" },
+            { TaskPriority.BelowNormal, "Niski" },
+            { TaskPriority.Normal, "Średni" },
+            { TaskPriority.AboveNormal, "Ważny" },
+            { TaskPriority.High, "Bardzo ważny" }
+        };
+
+        public string PriorityAsText => $"Priorytet: {PriorityDisplayNames[Priority]}";
+
+        public TaskItem(string title, string description, DateTime startTime, bool isMarkded, TaskPriority? taskPriority = null)
         {
             Title = title;
             Description = description;
             StartDate = startTime;
             IsCompleted = isMarkded;
+            Priority = taskPriority ?? TaskPriority.Low;
         }
 
         public TaskItem(string title, string description, DateTime startTime, DateTime finishDate, bool isMarkded,bool taskProgress,
-            int progressMaxInt, int progressCurrentInt, string progressString)
+            int progressMaxInt, int progressCurrentInt, string progressString, TaskPriority? taskPriority = null)
         {
             Title = title;
             Description = description;
@@ -164,6 +198,7 @@ namespace ToDoApp.Core.Models
             ProgressMaxInt = progressMaxInt;
             ProgressCurrentInt = progressCurrentInt;
             ProgressString = progressString;
+            Priority = taskPriority ?? TaskPriority.Low;
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;

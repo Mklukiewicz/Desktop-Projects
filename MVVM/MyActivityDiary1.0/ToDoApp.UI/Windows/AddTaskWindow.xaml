@@ -10,6 +10,7 @@
 
     <Window.Resources>
         <helper:BoolToTextConverter x:Key="BoolToTextConverter" />
+        <helper:TaskPriorityToPolishConverter x:Key="TaskPriorityToPolishConverter"/>
     </Window.Resources>
     <Grid>
         <StackPanel Margin="10">
@@ -29,7 +30,17 @@
                     </x:Array>
                 </ComboBox.ItemsSource>
             </ComboBox>
-            <Button Content="Dodaj" Click="AddButton_Click"/>
+            <TextBlock Text="Priorytet:" FontWeight="Bold" Margin="0,0,0,5"/>
+            <ComboBox ItemsSource="{Binding PriorityValues}"
+                       SelectedItem="{Binding Priority, Mode=TwoWay}"
+                       Margin="5" Width="150">   
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Converter={StaticResource TaskPriorityToPolishConverter}}" />
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+             </ComboBox>
+                <Button Content="Dodaj" Click="AddButton_Click"/>
         </StackPanel>
     </Grid>
 </Window>

@@ -15,6 +15,7 @@ using System.Linq;
 using System.Windows;
 using System.Reflection.Metadata;
 using System.ComponentModel;
+using static ToDoApp.Core.Models.TaskItem;
 
 namespace ToDoApp.UI.ViewModels
 {
@@ -31,12 +32,25 @@ namespace ToDoApp.UI.ViewModels
         private bool _hasTaskStringProgress;
         private string _taskStringProgress;
         private string? _stringProgressError;
+        private TaskPriority _priority = TaskPriority.Low;
+        private bool _hasTaskProgress;
 
         public string TaskItemViewModelTitle { get; set; }
         public string? TaskItemViewModelDescription { get; set; }
         public bool TaskItemViewModelIsChecked { get; set; }
-        public bool CanSave => !HasDateError && !HasProgressError && !HasStringProgressError;
-        public bool? HasTaskProgress { get; set; }      
+        public bool CanSave => !HasDateError && !HasProgressError && !HasStringProgressError;       
+        public bool HasTaskProgress
+        {
+            get => _hasTaskProgress;
+            set
+            {
+                if (_hasTaskProgress != value)
+                {
+                    _hasTaskProgress = value;
+                    OnPropertyChanged(nameof(HasTaskProgress));
+                }
+            }
+        }
         public bool HasTaskFinishDateProgress
         {
             get => _hasTaskFinishDateProgress;
@@ -168,6 +182,33 @@ namespace ToDoApp.UI.ViewModels
         public bool HasDateError => !string.IsNullOrEmpty(DateValidationError);
         public Action? OpenAdjustWindowCallback { get; set; }
         public TaskItem? BuiltTask { get; set; }
+        public TaskPriority Priority
+        {
+            get => _priority;
+            set
+            {
+                if (_priority != value)
+                {
+                    _priority = value;
+                    OnPropertyChanged(nameof(Priority));
+                    OnPropertyChanged(nameof(PriorityAsText));
+                    OnPropertyChanged(nameof(PriorityDisplayNames));
+                }
+            }
+        }
+        public Array PriorityValues => Enum.GetValues(typeof(TaskPriority));
+
+        public Dictionary<TaskPriority, string> PriorityDisplayNames => new()
+        {
+            { TaskPriority.Low, "Zerowy" },
+            { TaskPriority.BelowNormal, "Niski" },
+            { TaskPriority.Normal, "Średni" },
+            { TaskPriority.AboveNormal, "Ważny" },
+            { TaskPriority.High, "Bardzo ważny" }
+        };
+
+        public string PriorityAsText => $"Priorytet: {PriorityDisplayNames[Priority]}";
+
 
         public TaskItemViewModel()
         {
@@ -214,9 +255,24 @@ namespace ToDoApp.UI.ViewModels
         {
             if (parameter is TaskItem taskItem)
             {
-                var window = new UpdateTaskWindow
+                
+
+                var vm = new TaskItemViewModel
                 {
-                    DataContext = taskItem
+                    TaskItemViewModelTitle = taskItem.Title,
+                    TaskItemViewModelDescription = taskItem.Description,
+                    TaskItemViewModelStartDate = taskItem.StartDate,
+                    TaskItemViewModelFinishDate = taskItem.FinishDate,
+                    HasTaskProgress = taskItem.TaskProgress,
+                    MaxProgress = taskItem.ProgressMaxInt,
+                    CurrentProgress = taskItem.ProgressCurrentInt,
+                    TaskStringProgress = taskItem.ProgressString,
+                    Priority = (TaskPriority)taskItem.Priority,
+                    BuiltTask = taskItem
+                };
+                var window = new UpdateTaskWindow()
+                {
+                    DataContext = vm
                 };
 
                 window.ShowDialog();

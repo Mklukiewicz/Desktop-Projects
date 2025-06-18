@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using ToDoApp.Core.Models;
 using ToDoApp.UI.ViewModels;
+using static ToDoApp.Core.Models.TaskItem;
 
 namespace ToDoApp.UI.Windows
 {
@@ -50,7 +51,8 @@ namespace ToDoApp.UI.Windows
                         vm.TaskItemViewModelTitle,
                         vm.TaskItemViewModelDescription ?? "",
                         vm.TaskItemViewModelStartDate ?? DateTime.Today,
-                        false
+                        false,
+                        (TaskPriority)vm.Priority
                     );
 
                     DialogResult = true;
