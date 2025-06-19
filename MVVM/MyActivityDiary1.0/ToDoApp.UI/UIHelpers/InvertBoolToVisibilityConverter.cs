@@ -14,7 +14,7 @@ namespace ToDoApp.UI.UIHelpers
                 return boolValue ? Visibility.Collapsed : Visibility.Visible;
             }
 
-            return Visibility.Visible; // domyślnie widoczne
+            return Visibility.Visible;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

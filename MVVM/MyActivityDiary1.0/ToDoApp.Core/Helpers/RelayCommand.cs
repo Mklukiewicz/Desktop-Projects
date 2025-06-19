@@ -14,7 +14,7 @@ namespace ToDoApp.Core.Helpers
 
         private Action mAction;
 
-        public RelayCommand(Action action)// W DEPENDENCY INJECTION PARAMETR ZAWSZE 2 
+        public RelayCommand(Action action)
         {
             mAction = action;
         }
