@@ -103,3 +103,5 @@ C:\Users\mkluk\Source\Repos\Desktop-Projects\MVVM\MyActivityDiary1.0\ToDoApp.UI\
 C:\Users\mkluk\Source\Repos\Desktop-Projects\MVVM\MyActivityDiary1.0\ToDoApp.UI\bin\Debug\net8.0-windows\runtimes\win7-x86\native\libuv.dll
 C:\Users\mkluk\source\repos\Desktop-Projects\MVVM\MyActivityDiary1.0\ToDoApp.UI\obj\Debug\net8.0-windows\Windows\AdjustTaskWindow.g.cs
 C:\Users\mkluk\source\repos\Desktop-Projects\MVVM\MyActivityDiary1.0\ToDoApp.UI\obj\Debug\net8.0-windows\Windows\AdjustTaskWindow.baml
+C:\Users\mkluk\Source\Repos\Desktop-Projects\MVVM\MyActivityDiary1.0\ToDoApp.UI\obj\Debug\net8.0-windows\Pages\GraphPage.g.cs
+C:\Users\mkluk\Source\Repos\Desktop-Projects\MVVM\MyActivityDiary1.0\ToDoApp.UI\obj\Debug\net8.0-windows\Pages\GraphPage.baml

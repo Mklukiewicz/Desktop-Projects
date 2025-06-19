@@ -9,7 +9,7 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="MainPage">
     <Grid>
-        <TabControl x:Name="MainTabControl">
+        <TabControl x:Name="MainTabControl" SelectionChanged="TabControl_SelectionChanged">
             <TabItem x:Name="HomeTab" Header="Home">
                 <pages:HomePage />
             </TabItem>
@@ -24,6 +24,9 @@
             </TabItem>
             <TabItem x:Name="FinishedTasksTab" Header="Finished Tasks">
                 <pages:FinishedTasksPage/>
+            </TabItem>
+            <TabItem x:Name="ProgressGraph" Header="Progress Chart">
+                <pages:GraphPage/>
             </TabItem>
         </TabControl>
     </Grid>

@@ -206,8 +206,21 @@ namespace ToDoApp.UI.ViewModels
             { TaskPriority.AboveNormal, "Ważny" },
             { TaskPriority.High, "Bardzo ważny" }
         };
-
         public string PriorityAsText => $"Priorytet: {PriorityDisplayNames[Priority]}";
+
+        private string _motivationalQuote = "TEN TEKST BEDZIE PODMIENIANY MOTYWACYJNYMY HASŁAMI";
+        public string MotivationalQuote
+        {
+            get => _motivationalQuote;
+            set
+            {
+                if (_motivationalQuote != value)
+                {
+                    _motivationalQuote = value;
+                    OnPropertyChanged(nameof(MotivationalQuote));
+                }
+            }
+        }
 
 
         public TaskItemViewModel()
@@ -223,9 +236,8 @@ namespace ToDoApp.UI.ViewModels
         public  ICommand DeleteTaskItemCommand { get; set; }
         public  ICommand OpenAddTaskWindowCommand { get; set; }
         public  ICommand OpenUpdateWindowCommand { get; set; }
-        public  ICommand FinishTaskItemCommand { get; set; }
+        public  ICommand FinishTaskItemCommand { get; set; }     
 
-       
         private void DeleteTaskItem()
         {
             var checkedTasks = TaskItems.Where(x => x.IsCompleted == true).ToList();
@@ -289,7 +301,6 @@ namespace ToDoApp.UI.ViewModels
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
-
         private void CalculateTotalDays()
         {
             if (TaskItemViewModelStartDate.HasValue && TaskItemViewModelFinishDate.HasValue)
@@ -313,7 +324,6 @@ namespace ToDoApp.UI.ViewModels
                 OnPropertyChanged(nameof(TotalDaysLeft));
             }
         }
-
         private void ValidateProgress()
         {
             if (MaxProgress < CurrentProgress)
@@ -358,6 +368,21 @@ namespace ToDoApp.UI.ViewModels
             {
                 TaskItems.Add(task);
             }
+        }
+        public void UpdateMotivationalQuote()
+        {
+                var quotes = new List<string>
+        {
+            "Nie zatrzymuj się!",
+            "Działaj mimo wszystko!",
+            "Dziś jest dobry dzień, by zacząć!",
+            "Let's get it, champ!",
+            "Każdy dzień to nowa szansa!",
+            "Zrób dzisiaj to, czego inni nie chcą!"
+        };
+
+            var random = new Random();
+            MotivationalQuote = quotes[random.Next(quotes.Count)];
         }
     }
 }

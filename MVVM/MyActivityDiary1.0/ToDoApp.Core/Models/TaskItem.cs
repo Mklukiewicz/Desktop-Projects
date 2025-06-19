@@ -11,17 +11,17 @@ namespace ToDoApp.Core.Models
     public class TaskItem : INotifyPropertyChanged
     {
         private bool _showProgressFields = false;// ulozyc fieldy w kolejnosci alfabetycznej przy robieniu CleanCode
-        private int _progressMaxInt;
+        private int _progressMaxInt;// dodać graf tygodniowy który opisuje postęp zadan
         private bool _taskProgress;
         private int _progressCurrentInt;
         private string? _progressString;
-        public int Id { get; set; }// to bedzie wykorzystane do bazy danych 
-
-        private string _title = string.Empty;// lista sortować po priorytetowsci
-                                             
         private string _description = string.Empty;
         private DateTime _startDate;
         private DateTime? _finishDate;
+        private string _title = string.Empty;
+        private TaskPriority _priority;
+
+        public int Id { get; set; }// to bedzie wykorzystane do bazy danych                                     
         public string Title
         {
             get => _title;
@@ -151,7 +151,6 @@ namespace ToDoApp.Core.Models
             AboveNormal,    
             High            
         }
-        private TaskPriority _priority;
         public TaskPriority Priority
         {
             get => _priority;

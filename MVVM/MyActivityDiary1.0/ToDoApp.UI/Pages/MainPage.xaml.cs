@@ -27,6 +27,8 @@ namespace ToDoApp.UI.Pages
         {
             InitializeComponent();
 
+            DataContext = SharedViewModel;
+
             var homePage = new HomePage { DataContext = SharedViewModel };
             var listPage = new ListOfTasksPage { DataContext = SharedViewModel };
             var finishedTasksListPage = new FinishedTasksPage { DataContext = SharedViewModel };
@@ -34,6 +36,17 @@ namespace ToDoApp.UI.Pages
             HomeTab.Content = homePage;
             ListTab.Content = listPage;
             FinishedTasksTab.Content = finishedTasksListPage;
+        }
+
+        private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (HomeTab.IsSelected)
+            {
+                if (DataContext is TaskItemViewModel vm)
+                {
+                    vm.UpdateMotivationalQuote();
+                }
+            }
         }
     }
 }
