@@ -14,10 +14,10 @@ namespace ToDoApp.UI.ViewModels
 {
     public class CalendarViewModel : INotifyPropertyChanged
     {
-        private DateTime _currentDate = DateTime.Now;
+        private DateTime _currentDate = DateTime.Now;        
         private CalendarDay _selectedDay;
+
         public ObservableCollection<CalendarDay> CalendarDays { get; set; }
-        public string CurrentMonthName => DateTime.Now.ToString("MMMM yyyy");
         public DateTime CurrentDate
         {
             get => _currentDate;
@@ -32,9 +32,22 @@ namespace ToDoApp.UI.ViewModels
                 }
             }
         }
+        public string CurrentMonthName => DateTime.Now.ToString("MMMM yyyy");
+        public string DisplayMonth => $"{_currentDate.ToString("MMMM yyyy", new CultureInfo("pl-PL"))}";
+        public CalendarDay SelectedDay
+        {
+            get => _selectedDay;
+            set
+            {
+                _selectedDay = value;
+                OnPropertyChanged(nameof(SelectedDay));
+            }
+        }
+        public ICommand SelectDayCommand { get; }
         public ObservableCollection<TaskItem> TaskItems { get; set; }
 
-        public string DisplayMonth => $"{_currentDate.ToString("MMMM yyyy", new CultureInfo("pl-PL"))}";
+        public ICommand GoNextCommand { get; set; }
+        public ICommand GoPreviousCommand { get; set; }
 
         public CalendarViewModel(ObservableCollection<TaskItem> taskItems)
         {
@@ -47,23 +60,22 @@ namespace ToDoApp.UI.ViewModels
             SelectDayCommand = new RelayCommandParam(ExecuteSelectDay);
         }
 
-        public ICommand SelectDayCommand { get; }
-
-
-        public CalendarDay SelectedDay
-        {
-            get => _selectedDay;
-            set
-            {
-                _selectedDay = value;
-                OnPropertyChanged(nameof(SelectedDay));
-            }
-        }
-        public ICommand GoNextCommand {  get; set; }
-        public ICommand GoPreviousCommand { get; set; }
+       
         public void GoToNextMonth() => CurrentDate = CurrentDate.AddMonths(1);
         public void GoToPreviousMonth() => CurrentDate = CurrentDate.AddMonths(-1);
 
+        private void ExecuteSelectDay(object parameter)
+        {
+            if (parameter is CalendarDay day && !day.IsPlaceholder)
+            {
+                SelectedDay = day;
+            }
+        }
+        private IEnumerable<TaskItem> GetTasksForDate(DateTime date)
+        {
+            return TaskItems.Where(t =>
+                t.StartDate.Date == date.Date && !t.IsFinished);
+        }
         private void GenerateCalendar(DateTime date)
         {
             CalendarDays.Clear();
@@ -90,18 +102,8 @@ namespace ToDoApp.UI.ViewModels
             OnPropertyChanged(nameof(CalendarDays)); // to już niekonieczne, ale nie zaszkodzi
         }
 
-        private IEnumerable<TaskItem> GetTasksForDate(DateTime date)
-        {
-            return TaskItems.Where(t =>
-                t.StartDate.Date == date.Date && !t.IsFinished);
-        }
-        private void ExecuteSelectDay(object parameter)
-        {
-            if (parameter is CalendarDay day && !day.IsPlaceholder)
-            {
-                SelectedDay = day;
-            }
-        }
+
+
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged(string name)
             => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
