@@ -1,15 +1,77 @@
 ﻿<UserControl x:Class="ToDoApp.UI.Pages.CalendarPage"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:ToDoApp.UI.Pages"
-             mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-        <TextBlock Text="Tutaj będzie kalendarz" 
-                HorizontalAlignment="Center" 
-                VerticalAlignment="Center" 
-                FontSize="20" />
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:ToDoApp.UI.ViewModels"
+             xmlns:local="clr-namespace:ToDoApp.Core.Models;assembly=ToDoApp.Core"
+             mc:Ignorable="d">
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!-- Nagłówek z nazwą miesiąca -->
+        <TextBlock Text="{Binding MonthName}" FontSize="28" FontWeight="Bold" HorizontalAlignment="Center" Grid.Row="0" Margin="0,0,0,20" />
+
+        <!-- Nazwy dni tygodnia -->
+        <UniformGrid Columns="7" Grid.Row="1" Margin="0,0,0,10">
+            <TextBlock Text="Pon" FontWeight="Bold" HorizontalAlignment="Center" />
+            <TextBlock Text="Wt" FontWeight="Bold" HorizontalAlignment="Center" />
+            <TextBlock Text="Śr" FontWeight="Bold" HorizontalAlignment="Center" />
+            <TextBlock Text="Czw" FontWeight="Bold" HorizontalAlignment="Center" />
+            <TextBlock Text="Pt" FontWeight="Bold" HorizontalAlignment="Center" />
+            <TextBlock Text="Sob" FontWeight="Bold" HorizontalAlignment="Center" />
+            <TextBlock Text="Nd" FontWeight="Bold" HorizontalAlignment="Center" />
+        </UniformGrid>
+
+        <!-- Siatka dni -->
+        <ItemsControl Grid.Row="2" ItemsSource="{Binding CalendarDays}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <UniformGrid Columns="7" />
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate DataType="{x:Type local:CalendarDay}">
+                    <Border Margin="4" Padding="10" BorderBrush="Gray" BorderThickness="1">
+                        <Border.Style>
+                            <Style TargetType="Border">
+                                <Setter Property="Visibility" Value="Visible"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding DayNumber}" Value="0">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+
+                        <!-- ZAMIANA TU -->
+                        <StackPanel>
+                            <TextBlock Text="{Binding DayNumber}" 
+                       FontWeight="Bold" 
+                       FontSize="14" 
+                       HorizontalAlignment="Center"/>
+
+                            <!-- Pokaż liczbę zadań -->
+                            <TextBlock Text="{Binding Tasks.Count}" 
+                       FontSize="10" 
+                       Foreground="DarkGreen"
+                       HorizontalAlignment="Center"/>
+                        </StackPanel>
+                        <!-- DO TĄD -->
+                    </Border>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10">
+            <Button Content="◀" Command="{Binding GoPreviousCommand}" Width="40"/>
+            <TextBlock Text="{Binding DisplayMonth}" FontSize="20" FontWeight="Bold" Margin="20,0" VerticalAlignment="Center"/>
+            <Button Content="▶" Command="{Binding GoNextCommand}" Width="40"/>
+        </StackPanel>
+
     </Grid>
 </UserControl>

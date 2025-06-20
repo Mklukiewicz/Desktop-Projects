@@ -16,7 +16,7 @@
             <TabItem x:Name="ListTab" Header="List of Tasks">
                 <pages:ListOfTasksPage/>
             </TabItem>
-            <TabItem Header="Calendar">
+            <TabItem x:Name="CalendarTab" Header="Calendar">
                 <pages:CalendarPage/>
             </TabItem>
             <TabItem Header="Points">
