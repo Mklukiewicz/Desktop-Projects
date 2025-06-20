@@ -27,6 +27,9 @@ namespace ToDoApp.Core.Models
             }
         }
 
+        public IEnumerable<TaskItem> TasksSorted =>
+                Tasks.OrderByDescending(t => t.Priority).Take(3);
+
         protected void OnPropertyChanged(string name)
            => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
     }

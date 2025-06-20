@@ -49,20 +49,31 @@
                             </Style>
                         </Border.Style>
 
-                        <!-- ZAMIANA TU -->
                         <StackPanel>
-                            <TextBlock Text="{Binding DayNumber}" 
-                       FontWeight="Bold" 
-                       FontSize="14" 
+                            <!-- Day number -->
+                            <TextBlock Text="{Binding DayNumber}"
+                       FontWeight="Bold"
+                       FontSize="14"
                        HorizontalAlignment="Center"/>
 
-                            <!-- Pokaż liczbę zadań -->
-                            <TextBlock Text="{Binding Tasks.Count}" 
-                       FontSize="10" 
+                            <!-- Task count -->
+                            <TextBlock Text="{Binding Tasks.Count, StringFormat=Ilość zadań: {0}}"
+                       FontSize="10"
                        Foreground="DarkGreen"
                        HorizontalAlignment="Center"/>
+
+                            <!-- Top 3 task titles -->
+                            <ItemsControl ItemsSource="{Binding TasksSorted}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Title}"
+                                   FontSize="10"
+                                   Foreground="Black"
+                                   TextTrimming="CharacterEllipsis"/>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
                         </StackPanel>
-                        <!-- DO TĄD -->
                     </Border>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
