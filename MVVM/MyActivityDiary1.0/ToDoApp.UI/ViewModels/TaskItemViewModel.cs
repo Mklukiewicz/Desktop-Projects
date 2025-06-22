@@ -245,7 +245,7 @@ namespace ToDoApp.UI.ViewModels
 
             var random = new Random();
             MotivationalQuote = quotes[random.Next(quotes.Count)];
-        }// Na dniach dodać teksty motywacjyne 
+        }
 
         private void CalculateTotalDays()
         {
@@ -307,7 +307,7 @@ namespace ToDoApp.UI.ViewModels
                 SortTasksByPriority();
             }
         }
-        private void OpenUpdateWindow(object? parameter)// w zadaniu mozna dodać również regress
+        private void OpenUpdateWindow(object? parameter)
         {
             if (parameter is TaskItem taskItem)
             {
@@ -375,7 +375,6 @@ namespace ToDoApp.UI.ViewModels
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
-        public event PropertyChangedEventHandler? PropertyChanged;
-        
+        public event PropertyChangedEventHandler? PropertyChanged;        
     }
 }

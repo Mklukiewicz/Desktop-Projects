@@ -10,13 +10,11 @@ namespace ToDoApp.Core.Models
 {
     public class CalendarDay: INotifyPropertyChanged
     {
-        public int DayNumber { get; set; }
-        public bool IsPlaceholder { get; set; } = false;
-        public DateTime? Date { get; set; }
         private ObservableCollection<TaskItem> _tasks = new();
 
-        public event PropertyChangedEventHandler? PropertyChanged;
-
+        public int DayNumber { get; set; }
+        public DateTime? Date { get; set; }
+        public bool IsPlaceholder { get; set; } = false;
         public ObservableCollection<TaskItem> Tasks
         {
             get => _tasks;
@@ -32,5 +30,6 @@ namespace ToDoApp.Core.Models
 
         protected void OnPropertyChanged(string name)
            => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        public event PropertyChangedEventHandler? PropertyChanged;
     }
 }

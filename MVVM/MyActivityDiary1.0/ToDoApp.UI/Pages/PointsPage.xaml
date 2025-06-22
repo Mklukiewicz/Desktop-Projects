@@ -3,13 +3,73 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:ToDoApp.UI.Pages"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-        <TextBlock Text="Tutaj będzie strona z Punktami" 
-                HorizontalAlignment="Center" 
-                VerticalAlignment="Center" 
-                FontSize="20" />
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Nagłówek -->
+        <TextBlock Text="Postęp punktowy" 
+                   FontSize="24" 
+                   FontWeight="Bold" 
+                   HorizontalAlignment="Center" 
+                   Margin="0,0,0,20"/>
+
+        <!-- Tabela punktów -->
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Wiersz 1: Nazwa priorytetu -->
+            <TextBlock Text="Zerowy" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center"/>
+            <TextBlock Text="Niski" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center"/>
+            <TextBlock Text="Średni" Grid.Row="0" Grid.Column="2" HorizontalAlignment="Center"/>
+            <TextBlock Text="Ważny" Grid.Row="0" Grid.Column="3" HorizontalAlignment="Center"/>
+            <TextBlock Text="Bardzo Ważny" Grid.Row="0" Grid.Column="4" HorizontalAlignment="Center"/>
+
+            <!-- Wiersz 2: Punkty za zadanie -->
+            <TextBlock Text="1 pkt" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center"/>
+            <TextBlock Text="2 pkt" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center"/>
+            <TextBlock Text="3 pkt" Grid.Row="1" Grid.Column="2" HorizontalAlignment="Center"/>
+            <TextBlock Text="4 pkt" Grid.Row="1" Grid.Column="3" HorizontalAlignment="Center"/>
+            <TextBlock Text="5 pkt" Grid.Row="1" Grid.Column="4" HorizontalAlignment="Center"/>
+
+            <!-- Wiersz 3: Liczba ukończonych zadań -->
+            <TextBlock Text="{Binding ZerowyCount, StringFormat=Ukończone: {0}}" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Center"/>
+            <TextBlock Text="{Binding NiskiCount, StringFormat=Ukończone: {0}}" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Center"/>
+            <TextBlock Text="{Binding SredniCount, StringFormat=Ukończone: {0}}" Grid.Row="2" Grid.Column="2" HorizontalAlignment="Center"/>
+            <TextBlock Text="{Binding WaznyCount, StringFormat=Ukończone: {0}}" Grid.Row="2" Grid.Column="3" HorizontalAlignment="Center"/>
+            <TextBlock Text="{Binding BardzoWaznyCount, StringFormat=Ukończone: {0}}" Grid.Row="2" Grid.Column="4" HorizontalAlignment="Center"/>
+        </Grid>
+
+        <!-- Suma punktów i poziom -->
+        <StackPanel Grid.Row="2" Margin="0,30,0,0">
+            <TextBlock Text="{Binding TotalPoints, StringFormat=Zebrane punkty: {0}}" 
+                       FontSize="16" 
+                       FontWeight="SemiBold" 
+                       HorizontalAlignment="Center"/>
+            <ProgressBar Minimum="0" Maximum="{Binding MaxProgress}" 
+                         Value="{Binding ProgressValue, Mode=OneWay}" 
+                         Height="20" Margin="50,10"/>
+            <TextBlock Text="{Binding CurrentLevel, StringFormat=Poziom: {0}}" 
+                       FontSize="14" 
+                       FontWeight="Bold" 
+                       HorizontalAlignment="Center" Margin="0,5"/>
+        </StackPanel>
     </Grid>
 </UserControl>

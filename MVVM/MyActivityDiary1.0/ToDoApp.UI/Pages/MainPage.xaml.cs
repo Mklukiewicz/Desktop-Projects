@@ -33,12 +33,16 @@ namespace ToDoApp.UI.Pages
             var listPage = new ListOfTasksPage { DataContext = SharedViewModel };
             var finishedTasksListPage = new FinishedTasksPage { DataContext = SharedViewModel };
             var calendarPage = new CalendarPage { DataContext = new CalendarViewModel(SharedViewModel.TaskItems) };
-            
-
+            var pointsPage = new PointsPage
+            {
+                DataContext = new PointsViewModel(SharedViewModel.FinishedTaskItems)
+            };
+           
             HomeTab.Content = homePage;
             ListTab.Content = listPage;
             FinishedTasksTab.Content = finishedTasksListPage;
             CalendarTab.Content = calendarPage;
+            PointsTab.Content = pointsPage;
         }
 
         private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
