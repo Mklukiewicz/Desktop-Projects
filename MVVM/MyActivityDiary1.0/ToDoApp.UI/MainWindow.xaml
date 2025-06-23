@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:ToDoApp.UI"
         xmlns:pages ="clr-namespace:ToDoApp.UI.Pages"
         mc:Ignorable="d"
-        Title="MY ACTIVITY DIARY 1.0" Height="650" Width="800"
+        Title="MY ACTIVITY DIARY 1.0" 
         WindowState="Maximized"
         WindowStyle="SingleBorderWindow"
         ResizeMode="CanMinimize">

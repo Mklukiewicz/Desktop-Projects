@@ -363,13 +363,16 @@ namespace ToDoApp.UI.ViewModels
                 {
                     if (task.RemainingTime.TotalSeconds > 0)
                     {
-                        task.RemainingTime = task.RemainingTime.Subtract(TimeSpan.FromSeconds(1));
+                        task.RemainingTime = task.RemainingTime.Subtract(TimeSpan.FromSeconds(1));                       
                     }
                     else
                     {
                         timer.Stop();
                         task.IsTimerRunning = false;
                         _timers.Remove(task);
+
+                        System.Media.SystemSounds.Exclamation.Play();
+                        MessageBox.Show($"Zadanie \"{task.Title}\" zakończyło odliczanie!", "Czas minął!", MessageBoxButton.OK, MessageBoxImage.Information);
                     }
                 };
 
