@@ -10,11 +10,11 @@ none
 false
 TRACE;DEBUG;NET;NET8_0;NETCOREAPP
 C:\Users\mkluk\Source\Repos\Desktop-Projects\MVVM\MyActivityDiary1.0\ToDoApp.UI\App.xaml
-131409970019
+14-682644625
 
-27-1697818722
+29-1898492904
 205336093587
-Controls\WorkTaskControl.xaml;MainWindow.xaml;Pages\CalendarPage.xaml;Pages\FinishedTasksPage.xaml;Pages\GraphPage.xaml;Pages\HomePage.xaml;Pages\ListOfTasksPage.xaml;Pages\MainPage.xaml;Pages\PointsPage.xaml;Windows\AddTaskWindow.xaml;Windows\AdjustTaskWindow.xaml;Windows\TaskInfoWindow.xaml;Windows\UpdateTaskWindow.xaml;
+Controls\WorkTaskControl.xaml;MainWindow.xaml;Pages\CalendarPage.xaml;Pages\FinishedTasksPage.xaml;Pages\GraphPage.xaml;Pages\HomePage.xaml;Pages\ListOfTasksPage.xaml;Pages\MainPage.xaml;Pages\PointsPage.xaml;Windows\AddTaskWindow.xaml;Windows\AdjustTaskWindow.xaml;Windows\SetTimerWindow.xaml;Windows\TaskInfoWindow.xaml;Windows\UpdateTaskWindow.xaml;
 
 True
 

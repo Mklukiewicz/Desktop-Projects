@@ -1,0 +1,41 @@
+﻿<Window x:Class="ToDoApp.UI.Windows.SetTimerWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="Ustaw czas"
+        MinHeight="300" MinWidth="400"
+        MaxHeight="300" MaxWidth="400"
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterScreen">
+    <StackPanel Margin="20" VerticalAlignment="Center">
+
+        <!-- Nagłówek -->
+        <TextBlock Text="Jak długo ma trwać zadanie?" 
+                   FontSize="16" FontWeight="SemiBold" 
+                   HorizontalAlignment="Center" Margin="0,0,0,20"/>
+
+        <!-- Wiersz z ComboBoxami -->
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,20">
+            <StackPanel Margin="10,0" HorizontalAlignment="Center">
+                <ComboBox x:Name="HoursBox" Width="70" Height="30"/>
+                <TextBlock Text="Godzin" HorizontalAlignment="Center" Margin="0,5,0,0"/>
+            </StackPanel>
+            <StackPanel Margin="10,0" HorizontalAlignment="Center">
+                <ComboBox x:Name="MinutesBox" Width="70" Height="30"/>
+                <TextBlock Text="Minut" HorizontalAlignment="Center" Margin="0,5,0,0"/>
+            </StackPanel>
+            <StackPanel Margin="10,0" HorizontalAlignment="Center">
+                <ComboBox x:Name="SecondsBox" Width="70" Height="30"/>
+                <TextBlock Text="Sekund" HorizontalAlignment="Center" Margin="0,5,0,0"/>
+            </StackPanel>
+        </StackPanel>
+
+        <!-- Przyciski -->
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+            <Button Content="Zatwierdź" Width="120" Height="35" Margin="10,0" Click="ConfirmOnly_Click"/>
+            <Button Content="Zatwierdź i rozpocznij" Width="160" Height="35" Margin="10,0" Click="ConfirmAndStart_Click"/>
+        </StackPanel>
+    </StackPanel>
+</Window>

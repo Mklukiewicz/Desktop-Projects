@@ -94,6 +94,17 @@ namespace ToDoApp.Core.Models
         }
         public int? TotalDays => FinishDate.HasValue ? (FinishDate.Value - StartDate).Days : null;
         public int DaysLeft => FinishDate.HasValue ? (FinishDate.Value - DateTime.Now).Days : 0;
+        public bool HasTaskStringProgress => !string.IsNullOrWhiteSpace(ProgressString);
+        private bool _isTimerRunning;
+        public bool IsTimerRunning
+        {
+            get => _isTimerRunning;
+            set
+            {
+                _isTimerRunning = value;
+                OnPropertyChanged(nameof(IsTimerRunning));
+            }
+        }
         public string ProgressAsText => $"{ProgressCurrentInt}/{ProgressMaxInt}";
         public string ProgressAsDaysLeft => FinishDate.HasValue ? $"Zostało {DaysLeft} dni do końca" : string.Empty;
         public int ProgressMaxInt
@@ -129,7 +140,6 @@ namespace ToDoApp.Core.Models
                 }
             }
         }
-        public bool HasTaskStringProgress => !string.IsNullOrWhiteSpace(ProgressString);
         public bool ShowProgressFields
         {
             get => _showProgressFields;
@@ -162,6 +172,28 @@ namespace ToDoApp.Core.Models
                     OnPropertyChanged(nameof(Priority));
                     OnPropertyChanged(nameof(PriorityAsText));
                 }
+            }
+        }
+
+        private bool _showTimer;
+        public bool ShowTimer
+        {
+            get => _showTimer;
+            set
+            {
+                _showTimer = value;
+                OnPropertyChanged(nameof(ShowTimer));
+            }
+        }
+
+        private TimeSpan _remainingTime;
+        public TimeSpan RemainingTime
+        {
+            get => _remainingTime;
+            set
+            {
+                _remainingTime = value;
+                OnPropertyChanged(nameof(RemainingTime));
             }
         }
 

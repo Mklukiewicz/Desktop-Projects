@@ -37,6 +37,9 @@
     <Compile Update="Windows\AdjustTaskWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Windows\SetTimerWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Windows\TaskInfoWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -76,6 +79,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Windows\AdjustTaskWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Windows\SetTimerWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Windows\TaskInfoWindow.xaml">
