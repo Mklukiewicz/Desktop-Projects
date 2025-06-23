@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:ToDoApp.UI.Windows"
         xmlns:helper="clr-namespace:ToDoApp.UI.UIHelpers"
         mc:Ignorable="d"
-        Title="AdjustTaskWindow" Height="450" Width="800">
+        Title="Postęp Zadania" Height="450" Width="800">
     <Window.Resources>
         <helper:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
         <helper:InvertBoolConverter x:Key="InvertBoolConverter"/>

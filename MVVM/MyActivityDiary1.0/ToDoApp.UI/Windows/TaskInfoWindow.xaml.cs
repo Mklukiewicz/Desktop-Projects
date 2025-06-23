@@ -14,7 +14,7 @@ using System.Windows.Shapes;
 using ToDoApp.Core.Models;
 using ToDoApp.UI.ViewModels;
 
-namespace ToDoApp.UI.Windows
+namespace ToDoApp.UI.Windows//Prawdopodobnie do usunięcia
 {
     /// <summary>
     /// Interaction logic for TaskInfoWindow.xaml

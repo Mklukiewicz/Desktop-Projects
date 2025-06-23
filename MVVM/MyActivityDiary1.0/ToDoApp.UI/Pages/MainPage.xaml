@@ -10,24 +10,24 @@
       Title="MainPage">
     <Grid>
         <TabControl x:Name="MainTabControl" SelectionChanged="TabControl_SelectionChanged">
-            <TabItem x:Name="HomeTab" Header="Home">
+            <TabItem x:Name="HomeTab" Header="Strona Główna">
                 <pages:HomePage />
             </TabItem>
-            <TabItem x:Name="ListTab" Header="List of Tasks">
+            <TabItem x:Name="ListTab" Header="Lista Zadań">
                 <pages:ListOfTasksPage/>
             </TabItem>
-            <TabItem x:Name="CalendarTab" Header="Calendar">
+            <TabItem x:Name="CalendarTab" Header="Kalendarz">
                 <pages:CalendarPage/>
             </TabItem>
-            <TabItem  x:Name="PointsTab" Header="Points">
+            <TabItem  x:Name="PointsTab" Header="Punkty">
                 <pages:PointsPage/>
             </TabItem>
-            <TabItem x:Name="FinishedTasksTab" Header="Finished Tasks">
+            <TabItem x:Name="FinishedTasksTab" Header="Ukończone Zadania">
                 <pages:FinishedTasksPage/>
             </TabItem>
-            <TabItem x:Name="ProgressGraph" Header="Progress Chart">
+            <!--<TabItem x:Name="ProgressGraph" Header="Progress Chart">
                 <pages:GraphPage/>
-            </TabItem>
+            </TabItem>-->
         </TabControl>
     </Grid>
 </Page>
