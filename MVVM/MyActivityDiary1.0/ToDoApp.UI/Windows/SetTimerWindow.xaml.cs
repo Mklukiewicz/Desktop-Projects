@@ -20,8 +20,8 @@ namespace ToDoApp.UI.Windows
     public partial class SetTimerWindow : Window
     {
         public TimeSpan SelectedTime { get; private set; }
-
         public bool StartImmediately { get; private set; } = false;
+
 
         public SetTimerWindow()
         {
@@ -34,6 +34,8 @@ namespace ToDoApp.UI.Windows
             MinutesBox.SelectedIndex = 0;
             SecondsBox.SelectedIndex = 0;
         }
+
+
         private void ConfirmOnly_Click(object sender, RoutedEventArgs e)
         {
             SelectedTime = new TimeSpan(
@@ -44,7 +46,6 @@ namespace ToDoApp.UI.Windows
             DialogResult = true;
             Close();
         }
-
         private void ConfirmAndStart_Click(object sender, RoutedEventArgs e)
         {
             SelectedTime = new TimeSpan(

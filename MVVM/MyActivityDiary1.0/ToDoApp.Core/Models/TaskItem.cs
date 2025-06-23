@@ -195,7 +195,6 @@ namespace ToDoApp.Core.Models
                 }
             }
         }
-
         public int? TotalDays => FinishDate.HasValue ? (FinishDate.Value - StartDate).Days : null;       
 
 
@@ -224,12 +223,12 @@ namespace ToDoApp.Core.Models
         }
 
 
-        public event PropertyChangedEventHandler? PropertyChanged;
-      
+        public event PropertyChangedEventHandler? PropertyChanged;     
         protected void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
 
         public enum TaskPriority
         {
@@ -239,6 +238,5 @@ namespace ToDoApp.Core.Models
             AboveNormal,
             High
         }
-
     }
 }
