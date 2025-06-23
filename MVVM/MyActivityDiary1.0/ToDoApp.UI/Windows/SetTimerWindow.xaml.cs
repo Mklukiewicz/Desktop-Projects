@@ -38,23 +38,41 @@ namespace ToDoApp.UI.Windows
 
         private void ConfirmOnly_Click(object sender, RoutedEventArgs e)
         {
-            SelectedTime = new TimeSpan(
-                (int)HoursBox.SelectedItem,
-                (int)MinutesBox.SelectedItem,
-                (int)SecondsBox.SelectedItem);
+            var time = GetSelectedTime();
+            if (time == TimeSpan.Zero)
+            {
+                MessageBox.Show("Czas trwania nie może wynosić 00:00:00.", "Błąd", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            SelectedTime = time;
             StartImmediately = false;
             DialogResult = true;
             Close();
         }
+
         private void ConfirmAndStart_Click(object sender, RoutedEventArgs e)
         {
-            SelectedTime = new TimeSpan(
-                (int)HoursBox.SelectedItem,
-                (int)MinutesBox.SelectedItem,
-                (int)SecondsBox.SelectedItem);
+            var time = GetSelectedTime();
+            if (time == TimeSpan.Zero)
+            {
+                MessageBox.Show("Czas trwania nie może wynosić 00:00:00.", "Błąd", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            SelectedTime = time;
             StartImmediately = true;
             DialogResult = true;
             Close();
         }
+
+        private TimeSpan GetSelectedTime()
+        {
+            return new TimeSpan(
+                HoursBox.SelectedItem != null ? (int)HoursBox.SelectedItem : 0,
+                MinutesBox.SelectedItem != null ? (int)MinutesBox.SelectedItem : 0,
+                SecondsBox.SelectedItem != null ? (int)SecondsBox.SelectedItem : 0);
+        }
+
     }
 }
