@@ -107,3 +107,5 @@ C:\Users\mkluk\Source\Repos\Desktop-Projects\MVVM\MyActivityDiary1.0\ToDoApp.UI\
 C:\Users\mkluk\Source\Repos\Desktop-Projects\MVVM\MyActivityDiary1.0\ToDoApp.UI\obj\Debug\net8.0-windows\Pages\GraphPage.baml
 C:\Users\mkluk\Source\Repos\Desktop-Projects\MVVM\MyActivityDiary1.0\ToDoApp.UI\obj\Debug\net8.0-windows\Windows\SetTimerWindow.g.cs
 C:\Users\mkluk\Source\Repos\Desktop-Projects\MVVM\MyActivityDiary1.0\ToDoApp.UI\obj\Debug\net8.0-windows\Windows\SetTimerWindow.baml
+C:\Users\mkluk\Source\Repos\Desktop-Projects\MVVM\MyActivityDiary1.0\ToDoApp.UI\obj\Debug\net8.0-windows\ToDoApp.UI_Content.g.cs
+C:\Users\mkluk\Source\Repos\Desktop-Projects\MVVM\MyActivityDiary1.0\ToDoApp.UI\bin\Debug\net8.0-windows\Resources\favicon.ico

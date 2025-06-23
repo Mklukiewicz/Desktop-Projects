@@ -278,7 +278,24 @@ namespace ToDoApp.UI.ViewModels
             "Dziś jest dobry dzień, by zacząć!",
             "Let's get it, champ!",
             "Każdy dzień to nowa szansa!",
-            "Zrób dzisiaj to, czego inni nie chcą!"
+            "Zrób dzisiaj to, czego inni nie chcą!",
+            "Presja to PRZYWILEJ",
+            "NO WORK NO CHECK",
+            "Elevate over Bullshit",
+            "Zaufaj Procesowi",
+            "Kiedy ty nie trenujesz, ktoś inny staje się lepszy",
+            "Bądz tak dobry żeby nie mogli Cię ignorować",
+            "Hejterów nie mają tylko NoName",
+            "Cotidie Morimur",
+            "Angst fur Zukunft",
+            "I am better than I thought I was",
+            "Movin Forward",
+            "Wcielam w życie mój plan doskonały!",
+            "Becoming 1% better every day",
+            "Dont stop grinding",
+            "Bądź kim jesteś ale lepszym",
+            "Long Live Ambition",
+            "Maximum effort!",
         };
 
             var random = new Random();

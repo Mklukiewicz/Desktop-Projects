@@ -72,7 +72,7 @@
         "projectName": "ToDoApp.DB",
         "projectPath": "C:\\Users\\mkluk\\Source\\Repos\\Desktop-Projects\\MVVM\\MyActivityDiary1.0\\ToDoApp.DB\\ToDoApp.DB.csproj",
         "packagesPath": "C:\\Users\\mkluk\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\mkluk\\source\\repos\\Desktop-Projects\\MVVM\\MyActivityDiary1.0\\ToDoApp.DB\\obj\\",
+        "outputPath": "C:\\Users\\mkluk\\Source\\Repos\\Desktop-Projects\\MVVM\\MyActivityDiary1.0\\ToDoApp.DB\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

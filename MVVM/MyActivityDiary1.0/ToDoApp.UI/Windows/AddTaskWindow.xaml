@@ -19,7 +19,7 @@
             <TextBlock Text="Opis zadania:" FontWeight="Bold" Margin="0,0,0,5"/>
             <TextBox Text="{Binding TaskItemViewModelDescription, Mode=TwoWay}" Margin="0,10"/>
             <TextBlock Text="Data Rozpoczęcia Zadania" FontWeight="Bold" Margin="0,0,0,5"/>
-            <DatePicker SelectedDate="{Binding TaskItemViewModelStartTime, Mode=TwoWay}" Margin="0,10"/>
+            <DatePicker SelectedDate="{Binding TaskItemViewModelStartDate, Mode=TwoWay}" Margin="0,10"/>
             <TextBlock Text="Czy zadanie będzie posiadać Postęp" FontWeight="Bold" Margin="0,0,0,5"/>
             <ComboBox SelectedValue="{Binding HasTaskProgress, Mode=TwoWay, Converter={StaticResource BoolToTextConverter}}"
                       Width="150" Margin="0,0,0,15">
