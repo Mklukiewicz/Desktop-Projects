@@ -21,6 +21,9 @@ namespace ToDoApp.UI
         public MainWindow()
         {
             InitializeComponent();
+            //WindowState = WindowState.Maximized;
+            //WindowStyle = WindowStyle.None;
+            //ResizeMode = ResizeMode.NoResize;
         }
 
     }
