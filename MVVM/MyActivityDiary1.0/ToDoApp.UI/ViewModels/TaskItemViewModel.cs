@@ -1,19 +1,9 @@
-﻿using GalaSoft.MvvmLight.Helpers;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Controls;
+﻿using System.Collections.ObjectModel;
 using System.Windows.Input;
-using System.Xml.Linq;
 using ToDoApp.Core.Helpers;
 using ToDoApp.Core.Models;
 using ToDoApp.UI.Windows;
-using System.Linq;
 using System.Windows;
-using System.Reflection.Metadata;
 using System.ComponentModel;
 using static ToDoApp.Core.Models.TaskItem;
 using System.Windows.Threading;
@@ -35,23 +25,12 @@ namespace ToDoApp.UI.ViewModels
         private TaskPriority _priority = TaskPriority.Low;
         private string? _progressValidationError;
         private TimeSpan _remainingTime;
+        private bool _showTimer;
         private DateTime? _startDate;
         private string? _stringProgressError;
         private string _taskStringProgress;
-        private DispatcherTimer _timer;
+        private Dictionary<TaskItem, DispatcherTimer> _timers = new();
         private int _totalDaysLeft;
-
-        private bool _showTimer;
-        public bool ShowTimer
-        {
-            get => _showTimer;
-            set
-            {
-                _showTimer = value;
-                OnPropertyChanged(nameof(ShowTimer));
-            }
-        }
-
 
 
         public TaskItem? BuiltTask { get; set; }
@@ -203,6 +182,15 @@ namespace ToDoApp.UI.ViewModels
                 }
             }
         }
+        public bool ShowTimer
+        {
+            get => _showTimer;
+            set
+            {
+                _showTimer = value;
+                OnPropertyChanged(nameof(ShowTimer));
+            }
+        }
         public string? StringProgressError
         {
             get => _stringProgressError;
@@ -260,10 +248,6 @@ namespace ToDoApp.UI.ViewModels
         }
 
 
-
-
-        private TaskItem _currentTask;//tutaj to jest task podpiety do liczenia zmienic nazwe 
-
         public ICommand DeleteTaskItemCommand { get; set; }
         public ICommand FinishTaskItemCommand { get; set; }
         public ICommand OpenAddTaskWindowCommand { get; set; }
@@ -271,7 +255,6 @@ namespace ToDoApp.UI.ViewModels
         public ICommand StartCountdownCommand { get; set; }
         public ICommand StopCountDownCommand { get; set; }
         public ICommand StartTimerCommand { get; private set; }
-
 
 
         public TaskItemViewModel()
@@ -284,6 +267,7 @@ namespace ToDoApp.UI.ViewModels
             StopCountDownCommand = new RelayCommandParam(StopCountdown);
             StartTimerCommand = new RelayCommandParam(StartTimer);
         }
+
 
         public void UpdateMotivationalQuote()
         {
@@ -300,7 +284,6 @@ namespace ToDoApp.UI.ViewModels
             var random = new Random();
             MotivationalQuote = quotes[random.Next(quotes.Count)];
         }
-
         private void CalculateTotalDays()
         {
             if (TaskItemViewModelStartDate.HasValue && TaskItemViewModelFinishDate.HasValue)
@@ -361,6 +344,40 @@ namespace ToDoApp.UI.ViewModels
                 SortTasksByPriority();
             }
         }
+        private void StartCountdown(object parameter)
+        {
+            if (parameter is TaskItem task)
+            {
+                if (_timers.TryGetValue(task, out var existingTimer))
+                {
+                    existingTimer.Stop();
+                    _timers.Remove(task);
+                }
+
+                var timer = new DispatcherTimer
+                {
+                    Interval = TimeSpan.FromSeconds(1)
+                };
+
+                timer.Tick += (s, e) =>
+                {
+                    if (task.RemainingTime.TotalSeconds > 0)
+                    {
+                        task.RemainingTime = task.RemainingTime.Subtract(TimeSpan.FromSeconds(1));
+                    }
+                    else
+                    {
+                        timer.Stop();
+                        task.IsTimerRunning = false;
+                        _timers.Remove(task);
+                    }
+                };
+
+                _timers[task] = timer;
+                task.IsTimerRunning = true;
+                timer.Start();
+            }
+        }
         private void StartTimer(object parameter)
         {
             if (parameter is TaskItem task)
@@ -376,6 +393,26 @@ namespace ToDoApp.UI.ViewModels
                         StartCountdown(task);
                     }
                 }
+            }
+        }
+        private void StopCountdown(object parameter)
+        {
+            if (parameter is TaskItem task)
+            {
+                if (_timers.TryGetValue(task, out var timer))
+                {
+                    timer.Stop();
+                    task.IsTimerRunning = false;
+                    _timers.Remove(task);
+                }
+                else
+                {
+                    MessageBox.Show("Nie znaleziono timera dla tego taska.");
+                }
+            }
+            else
+            {
+                MessageBox.Show("Parameter to nie TaskItem.");
             }
         }
         private void OpenUpdateWindow(object? parameter)
@@ -419,77 +456,6 @@ namespace ToDoApp.UI.ViewModels
                 TaskItems.Add(task);
             }
         }
-        private Dictionary<TaskItem, DispatcherTimer> _timers = new();
-        private void StartCountdown(object parameter)
-        {
-            if (parameter is TaskItem task)
-            {
-                if (_timers.TryGetValue(task, out var existingTimer))
-                {
-                    existingTimer.Stop();
-                    _timers.Remove(task); // nie musisz usuwać Tick handlera bo był lambdą
-                }
-
-                var timer = new DispatcherTimer
-                {
-                    Interval = TimeSpan.FromSeconds(1)
-                };
-
-                timer.Tick += (s, e) =>
-                {
-                    if (task.RemainingTime.TotalSeconds > 0)
-                    {
-                        task.RemainingTime = task.RemainingTime.Subtract(TimeSpan.FromSeconds(1));
-                    }
-                    else
-                    {
-                        timer.Stop();
-                        task.IsTimerRunning = false;
-                        _timers.Remove(task);
-                    }
-                };
-
-                _timers[task] = timer;
-                task.IsTimerRunning = true;
-                timer.Start();
-            }
-        }
-
-        private void OnTimerTick(TaskItem task, DispatcherTimer timer)
-        {
-            if (task.RemainingTime.TotalSeconds > 0)
-            {
-                task.RemainingTime = task.RemainingTime.Subtract(TimeSpan.FromSeconds(1));
-            }
-            else
-            {
-                timer.Stop();
-                task.IsTimerRunning = false;
-                _timers.Remove(task);
-            }
-        }
-
-
-        private void StopCountdown(object parameter)
-        {
-            if (parameter is TaskItem task)
-            {
-                if (_timers.TryGetValue(task, out var timer))
-                {
-                    timer.Stop();
-                    task.IsTimerRunning = false;
-                    _timers.Remove(task);
-                }
-                else
-                {
-                    MessageBox.Show("Nie znaleziono timera dla tego taska.");
-                }
-            }
-            else
-            {
-                MessageBox.Show("Parameter to nie TaskItem.");
-            }
-        }
         private void ValidateProgress()
         {
             if (MaxProgress < CurrentProgress)
@@ -512,6 +478,7 @@ namespace ToDoApp.UI.ViewModels
                 StringProgressError = null;
             }
         }       
+
 
         protected void OnPropertyChanged(string name)
         {

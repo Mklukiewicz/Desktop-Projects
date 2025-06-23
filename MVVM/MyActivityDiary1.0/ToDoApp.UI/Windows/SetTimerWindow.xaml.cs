@@ -34,17 +34,6 @@ namespace ToDoApp.UI.Windows
             MinutesBox.SelectedIndex = 0;
             SecondsBox.SelectedIndex = 0;
         }
-
-        private void Confirm_Click(object sender, RoutedEventArgs e)
-        {
-            SelectedTime = new TimeSpan(
-                (int)HoursBox.SelectedItem,
-                (int)MinutesBox.SelectedItem,
-                (int)SecondsBox.SelectedItem);
-            DialogResult = true;
-            Close();
-        }
-
         private void ConfirmOnly_Click(object sender, RoutedEventArgs e)
         {
             SelectedTime = new TimeSpan(

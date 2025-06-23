@@ -10,30 +10,22 @@ namespace ToDoApp.Core.Models
 {
     public class TaskItem : INotifyPropertyChanged
     {
-        private bool _showProgressFields = false;// ulozyc fieldy w kolejnosci alfabetycznej przy robieniu CleanCode
-        private int _progressMaxInt;// dodać graf tygodniowy który opisuje postęp zadan
-        private bool _taskProgress;
-        private int _progressCurrentInt;
-        private string? _progressString;
         private string _description = string.Empty;
-        private DateTime _startDate;
         private DateTime? _finishDate;
-        private string _title = string.Empty;
+        private bool _isTimerRunning;
         private TaskPriority _priority;
+        private int _progressCurrentInt;
+        private int _progressMaxInt;
+        private string? _progressString;
+        private TimeSpan _remainingTime;
+        private bool _showTimer;
+        private bool _showProgressFields = false;
+        private DateTime _startDate;
+        private bool _taskProgress;
+        private string _title = string.Empty;
 
-        public int Id { get; set; }// to bedzie wykorzystane do bazy danych                                     
-        public string Title
-        {
-            get => _title;
-            set
-            {
-                if (_title != value)
-                {
-                    _title = value;
-                    OnPropertyChanged(nameof(Title));
-                }
-            }
-        }// ulozyc property w kolejnosci alfabetycznej przy robieniu CleanCode
+
+        public int DaysLeft => FinishDate.HasValue ? (FinishDate.Value - DateTime.Now).Days : 0;
         public string? Description
         {
             get => _description;
@@ -46,33 +38,16 @@ namespace ToDoApp.Core.Models
                 }
             }
         }
-        public DateTime StartDate
+        public int Id { get; set; }// to bedzie wykorzystane do bazy danych                                  
+        public string Title
         {
-            get => _startDate;
+            get => _title;
             set
             {
-                if (_startDate != value)
+                if (_title != value)
                 {
-                    _startDate = value;
-                    OnPropertyChanged(nameof(StartDate));
-                    OnPropertyChanged(nameof(TotalDays));
-                    OnPropertyChanged(nameof(DaysLeft));
-                    OnPropertyChanged(nameof(ProgressAsText));
-                    OnPropertyChanged(nameof(ProgressAsDaysLeft));
-                }
-            }
-        }
-        public bool IsCompleted { get; set; }// zmienic nazwe z IsCompleted na np. IsMarked
-        public bool TaskProgress
-        {
-            get => _taskProgress;
-            set
-            {
-                if (_taskProgress != value)
-                {
-                    _taskProgress = value;
-                    OnPropertyChanged(nameof(TaskProgress));
-                    ShowProgressFields = value; // <- dodaj to, jeśli jeszcze nie masz
+                    _title = value;
+                    OnPropertyChanged(nameof(Title));
                 }
             }
         }
@@ -92,10 +67,9 @@ namespace ToDoApp.Core.Models
                 }
             }
         }
-        public int? TotalDays => FinishDate.HasValue ? (FinishDate.Value - StartDate).Days : null;
-        public int DaysLeft => FinishDate.HasValue ? (FinishDate.Value - DateTime.Now).Days : 0;
         public bool HasTaskStringProgress => !string.IsNullOrWhiteSpace(ProgressString);
-        private bool _isTimerRunning;
+        public bool IsCompleted { get; set; }// zmienic nazwe z IsCompleted na np. IsMarked
+        public bool IsFinished { get; set; }
         public bool IsTimerRunning
         {
             get => _isTimerRunning;
@@ -105,18 +79,30 @@ namespace ToDoApp.Core.Models
                 OnPropertyChanged(nameof(IsTimerRunning));
             }
         }
-        public string ProgressAsText => $"{ProgressCurrentInt}/{ProgressMaxInt}";
-        public string ProgressAsDaysLeft => FinishDate.HasValue ? $"Zostało {DaysLeft} dni do końca" : string.Empty;
-        public int ProgressMaxInt
+        public TaskPriority Priority
         {
-            get => _progressMaxInt;
+            get => _priority;
             set
             {
-                _progressMaxInt = value;
-                OnPropertyChanged(nameof(ProgressMaxInt));
-                OnPropertyChanged(nameof(ProgressAsText));
+                if (_priority != value)
+                {
+                    _priority = value;
+                    OnPropertyChanged(nameof(Priority));
+                    OnPropertyChanged(nameof(PriorityAsText));
+                }
             }
-        }      
+        }
+        public string PriorityAsText => $"Priorytet: {PriorityDisplayNames[Priority]}";
+        public static Dictionary<TaskPriority, string> PriorityDisplayNames => new()
+        {
+            { TaskPriority.Low, "Zerowy" },
+            { TaskPriority.BelowNormal, "Niski" },
+            { TaskPriority.Normal, "Średni" },
+            { TaskPriority.AboveNormal, "Ważny" },
+            { TaskPriority.High, "Bardzo ważny" }
+        };
+        public string ProgressAsDaysLeft => FinishDate.HasValue ? $"Zostało {DaysLeft} dni do końca" : string.Empty;
+        public string ProgressAsText => $"{ProgressCurrentInt}/{ProgressMaxInt}";
         public int ProgressCurrentInt
         {
             get => _progressCurrentInt;
@@ -124,6 +110,16 @@ namespace ToDoApp.Core.Models
             {
                 _progressCurrentInt = value;
                 OnPropertyChanged(nameof(ProgressCurrentInt));
+                OnPropertyChanged(nameof(ProgressAsText));
+            }
+        }
+        public int ProgressMaxInt
+        {
+            get => _progressMaxInt;
+            set
+            {
+                _progressMaxInt = value;
+                OnPropertyChanged(nameof(ProgressMaxInt));
                 OnPropertyChanged(nameof(ProgressAsText));
             }
         }
@@ -140,6 +136,15 @@ namespace ToDoApp.Core.Models
                 }
             }
         }
+        public TimeSpan RemainingTime
+        {
+            get => _remainingTime;
+            set
+            {
+                _remainingTime = value;
+                OnPropertyChanged(nameof(RemainingTime));
+            }
+        }
         public bool ShowProgressFields
         {
             get => _showProgressFields;
@@ -152,30 +157,6 @@ namespace ToDoApp.Core.Models
                 }
             }
         }
-        public bool IsFinished { get; set; }
-        public enum TaskPriority
-        {
-            Low = 1,        
-            BelowNormal,    
-            Normal,         
-            AboveNormal,    
-            High            
-        }
-        public TaskPriority Priority
-        {
-            get => _priority;
-            set
-            {
-                if (_priority != value)
-                {
-                    _priority = value;
-                    OnPropertyChanged(nameof(Priority));
-                    OnPropertyChanged(nameof(PriorityAsText));
-                }
-            }
-        }
-
-        private bool _showTimer;
         public bool ShowTimer
         {
             get => _showTimer;
@@ -185,28 +166,38 @@ namespace ToDoApp.Core.Models
                 OnPropertyChanged(nameof(ShowTimer));
             }
         }
-
-        private TimeSpan _remainingTime;
-        public TimeSpan RemainingTime
+        public DateTime StartDate
         {
-            get => _remainingTime;
+            get => _startDate;
             set
             {
-                _remainingTime = value;
-                OnPropertyChanged(nameof(RemainingTime));
+                if (_startDate != value)
+                {
+                    _startDate = value;
+                    OnPropertyChanged(nameof(StartDate));
+                    OnPropertyChanged(nameof(TotalDays));
+                    OnPropertyChanged(nameof(DaysLeft));
+                    OnPropertyChanged(nameof(ProgressAsText));
+                    OnPropertyChanged(nameof(ProgressAsDaysLeft));
+                }
+            }
+        }      
+        public bool TaskProgress
+        {
+            get => _taskProgress;
+            set
+            {
+                if (_taskProgress != value)
+                {
+                    _taskProgress = value;
+                    OnPropertyChanged(nameof(TaskProgress));
+                    ShowProgressFields = value; // <- dodaj to, jeśli jeszcze nie masz
+                }
             }
         }
 
-        public static Dictionary<TaskPriority, string> PriorityDisplayNames => new()
-        {
-            { TaskPriority.Low, "Zerowy" },
-            { TaskPriority.BelowNormal, "Niski" },
-            { TaskPriority.Normal, "Średni" },
-            { TaskPriority.AboveNormal, "Ważny" },
-            { TaskPriority.High, "Bardzo ważny" }
-        };
+        public int? TotalDays => FinishDate.HasValue ? (FinishDate.Value - StartDate).Days : null;       
 
-        public string PriorityAsText => $"Priorytet: {PriorityDisplayNames[Priority]}";
 
         public TaskItem(string title, string description, DateTime startTime, bool isMarkded, TaskPriority? taskPriority = null)
         {
@@ -232,11 +223,21 @@ namespace ToDoApp.Core.Models
             Priority = taskPriority ?? TaskPriority.Low;
         }
 
+
         public event PropertyChangedEventHandler? PropertyChanged;
       
         protected void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        public enum TaskPriority
+        {
+            Low = 1,
+            BelowNormal,
+            Normal,
+            AboveNormal,
+            High
         }
 
     }
