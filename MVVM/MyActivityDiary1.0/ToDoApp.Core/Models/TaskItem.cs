@@ -195,8 +195,12 @@ namespace ToDoApp.Core.Models
                 }
             }
         }
-        public int? TotalDays => FinishDate.HasValue ? (FinishDate.Value - StartDate).Days : null;       
+        public int? TotalDays => FinishDate.HasValue ? (FinishDate.Value - StartDate).Days : null;
 
+        public TaskItem()
+        {
+            // Wymagany przez Entity Framework
+        }
 
         public TaskItem(string title, string description, DateTime startTime, bool isMarkded, TaskPriority? taskPriority = null)
         {

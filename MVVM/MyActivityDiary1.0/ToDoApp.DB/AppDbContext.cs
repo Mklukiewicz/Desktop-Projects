@@ -1,0 +1,32 @@
+﻿using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using ToDoApp.Core.Models;
+using ToDoApp.DB.Models;
+
+namespace ToDoApp.DB
+{
+    public class AppDbContext : DbContext
+    {
+        public DbSet<TaskItemDbModel> TaskItems { get; set; } = null!;
+
+        public DbSet<CalendarDay> CalendarDays { get; set; }
+
+        public AppDbContext(DbContextOptions<AppDbContext> options)
+            : base(options)
+        {
+        }
+
+        protected override void OnModelCreating(ModelBuilder mb)
+        {
+            // (opcjonalnie) konfiguracje
+            mb.Entity<TaskItemDbModel>()
+              .Property(t => t.Title)
+              .IsRequired()
+              .HasMaxLength(200);
+        }
+    }
+}
