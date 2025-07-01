@@ -9,6 +9,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using ToDoApp.DB.Repositories;
+using ToDoApp.DB;
+using ToDoApp.UI.Pages;
 using ToDoApp.UI.ViewModels;
 
 namespace ToDoApp.UI
@@ -21,6 +24,13 @@ namespace ToDoApp.UI
         public MainWindow()
         {
             InitializeComponent();
+
+            var dbContext = new AppDbContextFactory().CreateDbContext(Array.Empty<string>());
+            var repository = new TaskItemRepository(dbContext);
+            var pointsRepository = new PointsHistoryRepository(dbContext);
+            var mainPage = new MainPage(repository, pointsRepository);
+
+            MainFrame.Navigate(mainPage);
         }
 
     }

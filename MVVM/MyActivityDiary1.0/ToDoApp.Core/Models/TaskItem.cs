@@ -38,7 +38,7 @@ namespace ToDoApp.Core.Models
                 }
             }
         }
-        public int Id { get; set; }// to bedzie wykorzystane do bazy danych                                  
+        public int Id { get; set; }                              
         public string Title
         {
             get => _title;
@@ -68,7 +68,7 @@ namespace ToDoApp.Core.Models
             }
         }
         public bool HasTaskStringProgress => !string.IsNullOrWhiteSpace(ProgressString);
-        public bool IsCompleted { get; set; }// zmienic nazwe z IsCompleted na np. IsMarked
+        public bool IsMarked { get; set; }
         public bool IsFinished { get; set; }
         public bool IsTimerRunning
         {
@@ -207,7 +207,7 @@ namespace ToDoApp.Core.Models
             Title = title;
             Description = description;
             StartDate = startTime;
-            IsCompleted = isMarkded;
+            IsMarked = isMarkded;
             Priority = taskPriority ?? TaskPriority.Low;
         }
 
@@ -218,7 +218,7 @@ namespace ToDoApp.Core.Models
             Description = description;
             StartDate = startTime;
             FinishDate = finishDate;
-            IsCompleted = isMarkded;
+            IsMarked = isMarkded;
             TaskProgress = taskProgress;
             ProgressMaxInt = progressMaxInt;
             ProgressCurrentInt = progressCurrentInt;

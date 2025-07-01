@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using ToDoApp.DB.Repositories.Interfaces;
 using ToDoApp.UI.ViewModels;
 
 namespace ToDoApp.UI.Pages
@@ -21,21 +22,28 @@ namespace ToDoApp.UI.Pages
     /// </summary>
     public partial class MainPage : Page
     {
-        public TaskItemViewModel SharedViewModel { get; } = new TaskItemViewModel();
+        private readonly ITaskItemRepository _repository;
+        private readonly IPointsHistoryRepository _pointsHistoryRepository;
+        public TaskItemViewModel SharedViewModel { get; private set; }
+        public PointsViewModel PointsViewModel { get; private set; }
 
-        public MainPage()
+        public MainPage(ITaskItemRepository repository, IPointsHistoryRepository pointsHistoryRepository)
         {
             InitializeComponent();
 
+            _repository = repository;
+            _pointsHistoryRepository = pointsHistoryRepository;
+            SharedViewModel = new TaskItemViewModel(_repository, _pointsHistoryRepository);
+            PointsViewModel =  new PointsViewModel(SharedViewModel.FinishedTaskItems, pointsHistoryRepository);
             DataContext = SharedViewModel;
 
-            var homePage = new HomePage { DataContext = SharedViewModel };
-            var listPage = new ListOfTasksPage { DataContext = SharedViewModel };
-            var finishedTasksListPage = new FinishedTasksPage { DataContext = SharedViewModel };
+            var homePage = new HomePage(SharedViewModel);
+            var listPage = new ListOfTasksPage(SharedViewModel);
+            var finishedTasksListPage = new FinishedTasksPage(SharedViewModel);
             var calendarPage = new CalendarPage { DataContext = new CalendarViewModel(SharedViewModel.TaskItems) };
-            var pointsPage = new PointsPage
+            var pointsPage = new PointsPage(PointsViewModel)
             {
-                DataContext = new PointsViewModel(SharedViewModel.FinishedTaskItems)
+                DataContext = PointsViewModel
             };
            
             HomeTab.Content = homePage;
@@ -43,6 +51,11 @@ namespace ToDoApp.UI.Pages
             FinishedTasksTab.Content = finishedTasksListPage;
             CalendarTab.Content = calendarPage;
             PointsTab.Content = pointsPage;
+
+            Loaded += async (_, _) =>
+            {
+                await PointsViewModel.InitialiseAsync();
+            };
         }
 
         private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)

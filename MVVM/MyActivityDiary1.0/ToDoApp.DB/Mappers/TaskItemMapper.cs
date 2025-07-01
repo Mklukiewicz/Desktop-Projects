@@ -8,16 +8,18 @@ using ToDoApp.DB.Models;
 
 namespace ToDoApp.DB.Mappers
 {
-    public static class TaskItemMapper
+    public static class TaskItemMapper// tutaj bedzie trzeba dodać properte is marked
     {
         public static TaskItemDbModel ToDb(this TaskItem src) => new()
         {
             Id = src.Id,
             Title = src.Title,
             Description = src.Description,
-            StartDate = src.StartDate,
-            FinishDate = src.FinishDate,
-            IsCompleted = src.IsCompleted,
+            StartDate = DateTime.SpecifyKind(src.StartDate, DateTimeKind.Utc),
+            FinishDate = src.FinishDate.HasValue
+                        ? DateTime.SpecifyKind(src.FinishDate.Value, DateTimeKind.Utc)
+                        : (DateTime?)null,
+            IsFinished  = src.IsFinished,
             TaskProgress = src.TaskProgress,
             ProgressMaxInt = src.ProgressMaxInt,
             ProgressCurrentInt = src.ProgressCurrentInt,

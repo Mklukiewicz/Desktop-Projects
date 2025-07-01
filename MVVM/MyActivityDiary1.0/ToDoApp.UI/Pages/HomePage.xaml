@@ -11,7 +11,7 @@
 
         <TextBlock Text="Zadania w Toku:" FontSize="20" FontWeight="Bold" Margin="0,20,0,10" />
 
-        <ItemsControl ItemsSource="{Binding TaskItems}">
+        <ItemsControl ItemsSource="{Binding Top3ImportantOldestTasks}">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <TextBlock Text="{Binding Title}" FontSize="16" />

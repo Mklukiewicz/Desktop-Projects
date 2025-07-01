@@ -21,6 +21,7 @@ namespace ToDoApp.UI
 
         protected override void OnStartup(StartupEventArgs e)
         {
+            base.OnStartup(e);
             var config = new ConfigurationBuilder()
                 .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)

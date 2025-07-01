@@ -36,9 +36,26 @@ namespace ToDoApp.DB.Repositories
 
         public async Task UpdateAsync(TaskItemDbModel task)
         {
+            var trackedEntity = _context.ChangeTracker.Entries<TaskItemDbModel>()
+                .FirstOrDefault(e => e.Entity.Id == task.Id);
+
+            task.StartDate = EnsureUtc(task.StartDate);
+            task.FinishDate = task.FinishDate.HasValue
+                              ? EnsureUtc(task.FinishDate.Value)
+                              : null;
+
+            if (trackedEntity != null)
+            {
+                _ = trackedEntity.State = EntityState.Detached;
+            }
+
             _context.TaskItems.Update(task);
             await _context.SaveChangesAsync();
         }
+
+        static DateTime EnsureUtc(DateTime dt)
+                => dt.Kind == DateTimeKind.Utc ? dt
+                   : DateTime.SpecifyKind(dt, DateTimeKind.Utc);
 
         public async Task DeleteAsync(int id)
         {
@@ -48,6 +65,22 @@ namespace ToDoApp.DB.Repositories
                 _context.TaskItems.Remove(task);
                 await _context.SaveChangesAsync();
             }
+        }
+
+        public async Task<IEnumerable<TaskItemDbModel>> GetFinishedAsync()
+        {
+            return await _context.TaskItems                 
+                                 .Where(t => t.IsFinished)  
+                                 .AsNoTracking()            
+                                 .ToListAsync();
+        }
+
+        public async Task<IEnumerable<TaskItemDbModel>> GetOngoingAsync()
+        {
+            return await _context.TaskItems
+                                 .Where(t => !t.IsFinished)  
+                                 .AsNoTracking()
+                                 .ToListAsync();
         }
     }
 }

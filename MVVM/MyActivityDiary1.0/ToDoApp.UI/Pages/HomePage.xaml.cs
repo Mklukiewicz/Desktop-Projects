@@ -21,9 +21,11 @@ namespace ToDoApp.UI.Pages
     /// </summary>
     public partial class HomePage : UserControl
     {
-        public HomePage()
+        public HomePage(TaskItemViewModel sharedViewModel)
         {
             InitializeComponent();
+
+            DataContext = sharedViewModel;
         }
     }
 }

@@ -33,7 +33,7 @@
             </Grid.ColumnDefinitions>
 
             <!-- Wiersz 0: Tytuł + Data -->
-            <CheckBox Grid.Row="0" Grid.Column="0" IsChecked="{Binding IsCompleted}" Visibility="{Binding IsFinished, Converter={StaticResource InvertBoolToVisibilityConverter}}" VerticalAlignment="Top" Margin="0,0,10,0"/>
+            <CheckBox Grid.Row="0" Grid.Column="0" IsChecked="{Binding IsMarked}" Visibility="{Binding IsFinished, Converter={StaticResource InvertBoolToVisibilityConverter}}" VerticalAlignment="Top" Margin="0,0,10,0"/>
             <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding Title}" FontWeight="Bold" FontSize="14"/>
             <TextBlock Grid.Row="0" Grid.Column="2" Text="{Binding StartDate, StringFormat='{}({0:dd.MM.yyyy})'}" Foreground="Gray" FontStyle="Italic" Margin="10,0,0,0"/>
 
@@ -110,7 +110,6 @@
                         Command="{Binding DataContext.StopCountDownCommand, RelativeSource={RelativeSource AncestorType=UserControl, AncestorLevel=2}}"
                         CommandParameter="{Binding}" />
             </StackPanel>
-
         </Grid>
     </Border>
 </UserControl>

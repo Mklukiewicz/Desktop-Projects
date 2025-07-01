@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using ToDoApp.DB;
@@ -11,9 +12,11 @@ using ToDoApp.DB;
 namespace ToDoApp.DB.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250627145350_AddPointsHistory")]
+    partial class AddPointsHistory
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -121,20 +124,24 @@ namespace ToDoApp.DB.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("timestamp with time zone");
-
                     b.Property<int>("Points")
                         .HasColumnType("integer");
 
+                    b.Property<string>("Reason")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<int>("TaskItemId")
                         .HasColumnType("integer");
+
+                    b.Property<DateTime>("When")
+                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 
                     b.HasIndex("TaskItemId");
 
-                    b.ToTable("PointsHistory");
+                    b.ToTable("PointsHistoryDbModel");
                 });
 
             modelBuilder.Entity("ToDoApp.DB.Models.TaskItemDbModel", b =>
@@ -152,9 +159,6 @@ namespace ToDoApp.DB.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<bool>("IsCompleted")
-                        .HasColumnType("boolean");
-
-                    b.Property<bool>("IsFinished")
                         .HasColumnType("boolean");
 
                     b.Property<int>("Priority")

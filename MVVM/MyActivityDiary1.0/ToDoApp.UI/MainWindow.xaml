@@ -10,5 +10,5 @@
         WindowState="Maximized"
         WindowStyle="SingleBorderWindow"
         ResizeMode="CanMinimize">
-    <pages:MainPage/>
+    <Frame x:Name="MainFrame" NavigationUIVisibility="Hidden" />
 </Window>

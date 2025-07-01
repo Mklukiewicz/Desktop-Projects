@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using ToDoApp.UI.ViewModels;
 
 namespace ToDoApp.UI.Pages
 {
@@ -20,9 +21,11 @@ namespace ToDoApp.UI.Pages
     /// </summary>
     public partial class PointsPage : UserControl
     {
-        public PointsPage()
+        public PointsPage(PointsViewModel pointsVm)
         {
             InitializeComponent();
+            DataContext = pointsVm;
+            _ = pointsVm.InitialiseAsync(); // uruchamia się na starcie
         }
     }
 }

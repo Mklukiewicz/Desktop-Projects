@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using ToDoApp.Core.Models;
+using ToDoApp.UI.ViewModels;
 
 namespace ToDoApp.UI.Pages
 {
@@ -20,9 +22,19 @@ namespace ToDoApp.UI.Pages
     /// </summary>
     public partial class FinishedTasksPage : UserControl
     {
-        public FinishedTasksPage()
+        public FinishedTasksPage(TaskItemViewModel sharedViewModel)
         {
             InitializeComponent();
+
+            DataContext = sharedViewModel;
+        }
+
+        private void ToggleGroupVisibility(object sender, MouseButtonEventArgs e)
+        {
+            if (sender is Border border && border.DataContext is DateGroup group)
+            {
+                group.IsExpanded = !group.IsExpanded;
+            }
         }
     }
 }

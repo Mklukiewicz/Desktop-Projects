@@ -7,6 +7,9 @@ using System.Windows;
 using System.ComponentModel;
 using static ToDoApp.Core.Models.TaskItem;
 using System.Windows.Threading;
+using ToDoApp.DB.Repositories.Interfaces;
+using ToDoApp.DB.Mappers;
+using ToDoApp.DB.Models;
 
 namespace ToDoApp.UI.ViewModels
 {
@@ -22,16 +25,18 @@ namespace ToDoApp.UI.ViewModels
         private bool _isTimerRunning;
         private int _maxProgress;
         private string _motivationalQuote = "TEN TEKST BEDZIE PODMIENIANY MOTYWACYJNYMY HASŁAMI"; 
+        private readonly IPointsHistoryRepository _pointsHistoryRepository;
         private TaskPriority _priority = TaskPriority.Low;
         private string? _progressValidationError;
         private TimeSpan _remainingTime;
+        private readonly ITaskItemRepository _repository;
         private bool _showTimer;
         private DateTime? _startDate;
         private string? _stringProgressError;
         private string _taskStringProgress;
         private Dictionary<TaskItem, DispatcherTimer> _timers = new();
         private int _totalDaysLeft;
-
+        
 
         public TaskItem? BuiltTask { get; set; }
         public bool CanSave => !HasDateError && !HasProgressError && !HasStringProgressError;
@@ -57,6 +62,7 @@ namespace ToDoApp.UI.ViewModels
             }
         }
         public ObservableCollection<TaskItem> FinishedTaskItems { get; set; } = new ObservableCollection<TaskItem>();
+        public ObservableCollection<DateGroup> GroupedFinishedTasks { get; } = new();
         public bool HasDateError => !string.IsNullOrEmpty(DateValidationError);
         public bool HasProgressError => !string.IsNullOrEmpty(ProgressValidationError);
         public bool HasStringProgressError => !string.IsNullOrEmpty(StringProgressError);
@@ -246,6 +252,12 @@ namespace ToDoApp.UI.ViewModels
                 OnPropertyChanged(nameof(TotalDaysLeft));
             }
         }
+        public IEnumerable<TaskItem> Top3ImportantOldestTasks =>
+                                     TaskItems
+                                    .Where(t => !t.IsFinished)
+                                    .OrderByDescending(t => t.Priority)   
+                                    .ThenBy(t => t.StartDate)             
+                                    .Take(3);
 
 
         public ICommand DeleteTaskItemCommand { get; set; }
@@ -257,15 +269,18 @@ namespace ToDoApp.UI.ViewModels
         public ICommand StartTimerCommand { get; private set; }
 
 
-        public TaskItemViewModel()
+        public TaskItemViewModel(ITaskItemRepository repository, IPointsHistoryRepository pointsHistoryRepository)
         {
-            DeleteTaskItemCommand = new RelayCommand(DeleteTaskItem);
-            OpenAddTaskWindowCommand = new RelayCommand(OpenAddTaskWindow);
-            OpenUpdateWindowCommand = new RelayCommandParam(OpenUpdateWindow);
-            FinishTaskItemCommand = new RelayCommandParam(FinishTaskItem);
+            _repository = repository;
+            _pointsHistoryRepository = pointsHistoryRepository;
+            DeleteTaskItemCommand = new RelayCommand(async () => await DeleteTaskItem());
+            OpenAddTaskWindowCommand = new RelayCommand(async () => await OpenAddTaskWindow());
+            OpenUpdateWindowCommand = new RelayCommandParam(async p => await OpenUpdateWindow(p));
+            FinishTaskItemCommand = new RelayCommandParam(async p => await FinishTaskItemAsync(p));
             StartCountdownCommand = new RelayCommandParam(StartCountdown);
             StopCountDownCommand = new RelayCommandParam(StopCountdown);
-            StartTimerCommand = new RelayCommandParam(StartTimer);
+            StartTimerCommand = new RelayCommandParam(StartTimer);           
+            _ = LoadTaskItemsAsync();
         }
 
 
@@ -276,6 +291,7 @@ namespace ToDoApp.UI.ViewModels
             "Nie zatrzymuj się!",
             "Działaj mimo wszystko!",
             "Dziś jest dobry dzień, by zacząć!",
+            "Świat jest MÓJ więc niech daje mi to czego chcę",
             "Let's get it, champ!",
             "Każdy dzień to nowa szansa!",
             "Zrób dzisiaj to, czego inni nie chcą!",
@@ -324,41 +340,122 @@ namespace ToDoApp.UI.ViewModels
                 OnPropertyChanged(nameof(TotalDaysLeft));
             }
         }
-        private void DeleteTaskItem()
+        private async Task DeleteTaskItem()
         {
-            var checkedTasks = TaskItems.Where(x => x.IsCompleted == true).ToList();
+            var checkedTasks = TaskItems.Where(x => x.IsMarked).ToList();
 
-            foreach (var checkedTask in checkedTasks)
+            foreach (var task in checkedTasks)
             {
-                TaskItems.Remove(checkedTask);
+                var dbModel = task.ToDb();
+                await _repository.DeleteAsync(dbModel.Id);
+
+                TaskItems.Remove(task);
             }
+
+            SortTasksByPriority();
+            OnPropertyChanged(nameof(Top3ImportantOldestTasks));
         }
-        private void FinishTaskItem(object? parameter)
+        private async Task FinishTaskItemAsync(object? parameter)
         {
-            if (parameter is TaskItem taskItemToFinish)
+            if (parameter is not TaskItem task)
+                return;
+
+            task.IsFinished = true;
+            task.FinishDate ??= DateTime.UtcNow;
+
+            var dbModel = task.ToDb();             
+            if (dbModel.Id == 0)
+                await _repository.AddAsync(dbModel);
+            else
+                await _repository.UpdateAsync(dbModel);
+
+            task.Id = dbModel.Id;               
+
+            int pts = task.Priority switch
             {
-                taskItemToFinish.IsFinished = true;
+                TaskPriority.Low => 1,
+                TaskPriority.BelowNormal => 2,
+                TaskPriority.Normal => 3,
+                TaskPriority.AboveNormal => 4,
+                TaskPriority.High => 5,
+                _ => 0
+            };
 
-                if (!FinishedTaskItems.Contains(taskItemToFinish))
-                    FinishedTaskItems.Add(taskItemToFinish);
+            var historyEntry = new PointsHistoryDbModel
+            {
+                TaskItemId = task.Id,
+                Date = DateTime.UtcNow,
+                Points = pts
+            };
+            await _pointsHistoryRepository.AddAsync(historyEntry);
 
-                TaskItems.Remove(taskItemToFinish);
-                SortTasksByPriority();
-            }
+            if (!FinishedTaskItems.Contains(task))
+                FinishedTaskItems.Add(task);
+
+            TaskItems.Remove(task);
+
+            RefreshGroupedFinishedTasks();
+            OnPropertyChanged(nameof(Top3ImportantOldestTasks));
         }
-        private void OpenAddTaskWindow()
+        private async Task LoadTaskItemsAsync()
         {
-            var vm = new TaskItemViewModel();
+            var ongoingDbItems = await _repository.GetOngoingAsync(); 
+            var finishedDbItems = await _repository.GetFinishedAsync(); 
+
+            TaskItems.Clear();
+            FinishedTaskItems.Clear();
+            GroupedFinishedTasks.Clear();
+
+            foreach (var db in ongoingDbItems)
+            {
+                var domain = TaskItemMapper.ToDomain(db);
+                TaskItems.Add(domain);
+            }
+
+            foreach (var db in finishedDbItems)
+            {
+                var domain = TaskItemMapper.ToDomain(db);
+                FinishedTaskItems.Add(domain);
+            }
+
+            var grouped = FinishedTaskItems
+                .GroupBy(t => t.FinishDate.Value)
+                .OrderByDescending(g => g.Key)
+                .Select(g => new DateGroup
+                {
+                    Date = g.Key,
+                    Tasks = new ObservableCollection<TaskItem>(g)
+                });
+
+            foreach (var group in grouped)
+                GroupedFinishedTasks.Add(group);
+
+            SortTasksByPriority();
+            RefreshGroupedFinishedTasks();
+            OnPropertyChanged(nameof(Top3ImportantOldestTasks));
+            OnPropertyChanged(nameof(GroupedFinishedTasks));
+        }
+        private async Task OpenAddTaskWindow()
+        {
+            var vm = new TaskItemViewModel(_repository, _pointsHistoryRepository);
 
             var addWindow = new AddTaskWindow
             {
                 DataContext = vm
             };
 
-            if (addWindow.ShowDialog() == true && vm.BuiltTask != null)
+            if (addWindow.ShowDialog() == true && vm.BuiltTask is not null)
             {
+                var dbModel = TaskItemMapper.ToDb(vm.BuiltTask);
+
+                await _repository.AddAsync(dbModel);
+
+                vm.BuiltTask.Id = dbModel.Id;
+
                 TaskItems.Add(vm.BuiltTask);
+
                 SortTasksByPriority();
+                OnPropertyChanged(nameof(Top3ImportantOldestTasks));
             }
         }
         private void StartCountdown(object parameter)
@@ -435,36 +532,54 @@ namespace ToDoApp.UI.ViewModels
                 MessageBox.Show("Parameter to nie TaskItem.");
             }
         }
-        private void OpenUpdateWindow(object? parameter)
+        private async Task OpenUpdateWindow(object? parameter)
         {
-            if (parameter is TaskItem taskItem)
+            if (parameter is not TaskItem taskItem)
+                return;
+
+            var vm = new TaskItemViewModel(_repository, _pointsHistoryRepository)
             {
-                
+                TaskItemViewModelTitle = taskItem.Title,
+                TaskItemViewModelDescription = taskItem.Description,
+                TaskItemViewModelStartDate = taskItem.StartDate,
+                TaskItemViewModelFinishDate = taskItem.FinishDate,
+                HasTaskProgress = taskItem.TaskProgress,
+                MaxProgress = taskItem.ProgressMaxInt,
+                CurrentProgress = taskItem.ProgressCurrentInt,
+                TaskStringProgress = taskItem.ProgressString,
+                Priority = (TaskPriority)taskItem.Priority,
+                BuiltTask = taskItem 
+            };
 
-                var vm = new TaskItemViewModel
-                {
-                    TaskItemViewModelTitle = taskItem.Title,
-                    TaskItemViewModelDescription = taskItem.Description,
-                    TaskItemViewModelStartDate = taskItem.StartDate,
-                    TaskItemViewModelFinishDate = taskItem.FinishDate,
-                    HasTaskProgress = taskItem.TaskProgress,
-                    MaxProgress = taskItem.ProgressMaxInt,
-                    CurrentProgress = taskItem.ProgressCurrentInt,
-                    TaskStringProgress = taskItem.ProgressString,
-                    Priority = (TaskPriority)taskItem.Priority,
-                    BuiltTask = taskItem
-                };
-                var window = new UpdateTaskWindow()
-                {
-                    DataContext = vm
-                };
+            var window = new UpdateTaskWindow { DataContext = vm };
+            var result = window.ShowDialog();
 
-                var result = window.ShowDialog();
-                if (result == true)
-                {
-                    SortTasksByPriority();
-                }
+            if (result == true && vm.BuiltTask is not null)
+            {
+                SortTasksByPriority();
+                OnPropertyChanged(nameof(Top3ImportantOldestTasks));
+
+                var dbModel = TaskItemMapper.ToDb(vm.BuiltTask);
+                await _repository.UpdateAsync(dbModel);
             }
+        }
+        private void RefreshGroupedFinishedTasks()
+        {
+            GroupedFinishedTasks.Clear();
+
+            var grouped = FinishedTaskItems
+                .Where(t => t.FinishDate.HasValue)
+                .GroupBy(t => t.FinishDate.Value.Date)
+                .OrderByDescending(g => g.Key)
+                .Select(g => new DateGroup
+                {
+                    Date = g.Key,
+                    Tasks = new ObservableCollection<TaskItem>(g),
+                    IsExpanded = false
+                });
+
+            foreach (var group in grouped)
+                GroupedFinishedTasks.Add(group);
         }
         private void SortTasksByPriority()
         {

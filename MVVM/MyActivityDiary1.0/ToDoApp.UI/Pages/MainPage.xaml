@@ -11,19 +11,14 @@
     <Grid>
         <TabControl x:Name="MainTabControl" SelectionChanged="TabControl_SelectionChanged">
             <TabItem x:Name="HomeTab" Header="Strona Główna">
-                <pages:HomePage />
             </TabItem>
             <TabItem x:Name="ListTab" Header="Lista Zadań">
-                <pages:ListOfTasksPage/>
             </TabItem>
             <TabItem x:Name="CalendarTab" Header="Kalendarz">
-                <pages:CalendarPage/>
             </TabItem>
             <TabItem  x:Name="PointsTab" Header="Punkty">
-                <pages:PointsPage/>
             </TabItem>
             <TabItem x:Name="FinishedTasksTab" Header="Ukończone Zadania">
-                <pages:FinishedTasksPage/>
             </TabItem>
             <!--<TabItem x:Name="ProgressGraph" Header="Progress Chart">
                 <pages:GraphPage/>

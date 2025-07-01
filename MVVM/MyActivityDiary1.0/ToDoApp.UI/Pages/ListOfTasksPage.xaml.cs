@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using ToDoApp.DB.Repositories.Interfaces;
 using ToDoApp.UI.ViewModels;
 
 namespace ToDoApp.UI.Pages
@@ -21,11 +22,12 @@ namespace ToDoApp.UI.Pages
     /// </summary>
     public partial class ListOfTasksPage : UserControl
     {
-        public ListOfTasksPage()
+        private readonly ITaskItemRepository _repository;
+        public ListOfTasksPage(TaskItemViewModel sharedViewModel)
         {
             InitializeComponent();
 
-            DataContext = new TaskItemViewModel();
+            DataContext = sharedViewModel;
         }
     }
 }
