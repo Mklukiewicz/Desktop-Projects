@@ -25,5 +25,6 @@ namespace ToDoApp.DB.Models
         public int ProgressCurrentInt { get; set; }
         public string? ProgressString { get; set; }
         public TaskPriority Priority { get; set; }
+        public TimeSpan? RemainingTime { get; set; }
     }
 }

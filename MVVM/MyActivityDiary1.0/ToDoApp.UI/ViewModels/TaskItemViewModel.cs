@@ -35,6 +35,7 @@ namespace ToDoApp.UI.ViewModels
         private string? _stringProgressError;
         private string _taskStringProgress;
         private Dictionary<TaskItem, DispatcherTimer> _timers = new();
+        private readonly Dictionary<TaskItem, DispatcherTimer> _saveTimers = new();
         private int _totalDaysLeft;
         
 
@@ -277,8 +278,8 @@ namespace ToDoApp.UI.ViewModels
             OpenAddTaskWindowCommand = new RelayCommand(async () => await OpenAddTaskWindow());
             OpenUpdateWindowCommand = new RelayCommandParam(async p => await OpenUpdateWindow(p));
             FinishTaskItemCommand = new RelayCommandParam(async p => await FinishTaskItemAsync(p));
-            StartCountdownCommand = new RelayCommandParam(StartCountdown);
-            StopCountDownCommand = new RelayCommandParam(StopCountdown);
+            StartCountdownCommand = new RelayCommandParam(async p => await StartCountdown(p));
+            StopCountDownCommand = new RelayCommandParam(async p => await StopCountdown(p));
             StartTimerCommand = new RelayCommandParam(StartTimer);           
             _ = LoadTaskItemsAsync();
         }
@@ -409,6 +410,11 @@ namespace ToDoApp.UI.ViewModels
             foreach (var db in ongoingDbItems)
             {
                 var domain = TaskItemMapper.ToDomain(db);
+                // Jeśli pozostało więcej niż 0 i zadanie nie jest zakończone → pokaż timer
+                if (domain.RemainingTime > TimeSpan.Zero && !domain.IsFinished)
+                {
+                    domain.ShowTimer = true;
+                }
                 TaskItems.Add(domain);
             }
 
@@ -428,7 +434,7 @@ namespace ToDoApp.UI.ViewModels
                 });
 
             foreach (var group in grouped)
-                GroupedFinishedTasks.Add(group);
+                GroupedFinishedTasks.Add(group);       
 
             SortTasksByPriority();
             RefreshGroupedFinishedTasks();
@@ -458,7 +464,7 @@ namespace ToDoApp.UI.ViewModels
                 OnPropertyChanged(nameof(Top3ImportantOldestTasks));
             }
         }
-        private void StartCountdown(object parameter)
+        private async Task StartCountdown(object parameter)
         {
             if (parameter is TaskItem task)
             {
@@ -466,6 +472,12 @@ namespace ToDoApp.UI.ViewModels
                 {
                     existingTimer.Stop();
                     _timers.Remove(task);
+                }
+
+                if (_saveTimers.TryGetValue(task, out var existingSaveTimer))
+                {
+                    existingSaveTimer.Stop();
+                    _saveTimers.Remove(task);
                 }
 
                 var timer = new DispatcherTimer
@@ -477,7 +489,7 @@ namespace ToDoApp.UI.ViewModels
                 {
                     if (task.RemainingTime.TotalSeconds > 0)
                     {
-                        task.RemainingTime = task.RemainingTime.Subtract(TimeSpan.FromSeconds(1));                       
+                        task.RemainingTime = task.RemainingTime.Subtract(TimeSpan.FromSeconds(1));
                     }
                     else
                     {
@@ -485,17 +497,37 @@ namespace ToDoApp.UI.ViewModels
                         task.IsTimerRunning = false;
                         _timers.Remove(task);
 
+                        if (_saveTimers.TryGetValue(task, out var saveTimer))
+                        {
+                            saveTimer.Stop();
+                            _saveTimers.Remove(task);
+                        }
+
                         System.Media.SystemSounds.Exclamation.Play();
                         MessageBox.Show($"Zadanie \"{task.Title}\" zakończyło odliczanie!", "Czas minął!", MessageBoxButton.OK, MessageBoxImage.Information);
                     }
                 };
 
+                var saveTimer = new DispatcherTimer
+                {
+                    Interval = TimeSpan.FromSeconds(10)
+                };
+
+                saveTimer.Tick += async (s, e) =>
+                {
+                    var dbItem = task.ToDb();
+                    await _repository.UpdateAsync(dbItem);
+                };
+
                 _timers[task] = timer;
+                _saveTimers[task] = saveTimer;
+
                 task.IsTimerRunning = true;
                 timer.Start();
+                saveTimer.Start();
             }
         }
-        private void StartTimer(object parameter)
+        private async void StartTimer(object parameter)
         {
             if (parameter is TaskItem task)
             {
@@ -505,6 +537,10 @@ namespace ToDoApp.UI.ViewModels
                     task.RemainingTime = window.SelectedTime;
                     task.ShowTimer = true;
 
+                    // 🛠️ Zapisujemy nowy czas do bazy
+                    var dbModel = task.ToDb();
+                    await _repository.UpdateAsync(dbModel);
+
                     if (window.StartImmediately)
                     {
                         StartCountdown(task);
@@ -512,7 +548,7 @@ namespace ToDoApp.UI.ViewModels
                 }
             }
         }
-        private void StopCountdown(object parameter)
+        private async Task StopCountdown(object parameter)
         {
             if (parameter is TaskItem task)
             {
@@ -522,10 +558,15 @@ namespace ToDoApp.UI.ViewModels
                     task.IsTimerRunning = false;
                     _timers.Remove(task);
                 }
-                else
+
+                if (_saveTimers.TryGetValue(task, out var saveTimer))
                 {
-                    MessageBox.Show("Nie znaleziono timera dla tego taska.");
+                    saveTimer.Stop();
+                    _saveTimers.Remove(task);
                 }
+
+                var dbItem = task.ToDb();
+                _ = _repository.UpdateAsync(dbItem); // opcjonalnie zapis końcowy
             }
             else
             {

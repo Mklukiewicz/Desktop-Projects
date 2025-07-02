@@ -8,7 +8,7 @@ using ToDoApp.DB.Models;
 
 namespace ToDoApp.DB.Mappers
 {
-    public static class TaskItemMapper// tutaj bedzie trzeba dodać properte is marked
+    public static class TaskItemMapper
     {
         public static TaskItemDbModel ToDb(this TaskItem src) => new()
         {
@@ -24,7 +24,8 @@ namespace ToDoApp.DB.Mappers
             ProgressMaxInt = src.ProgressMaxInt,
             ProgressCurrentInt = src.ProgressCurrentInt,
             ProgressString = src.ProgressString,
-            Priority = src.Priority
+            Priority = src.Priority,
+            RemainingTime = src.RemainingTime,
         };
 
         public static TaskItem ToDomain(this TaskItemDbModel db) => new(
@@ -39,7 +40,8 @@ namespace ToDoApp.DB.Mappers
             TaskProgress = db.TaskProgress,
             ProgressMaxInt = db.ProgressMaxInt,
             ProgressCurrentInt = db.ProgressCurrentInt,
-            ProgressString = db.ProgressString
+            ProgressString = db.ProgressString,
+            RemainingTime = db.RemainingTime ?? TimeSpan.Zero,
         };
     }
 }
