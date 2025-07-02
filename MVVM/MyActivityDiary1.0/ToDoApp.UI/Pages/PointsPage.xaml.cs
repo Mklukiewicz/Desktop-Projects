@@ -25,7 +25,7 @@ namespace ToDoApp.UI.Pages
         {
             InitializeComponent();
             DataContext = pointsVm;
-            _ = pointsVm.InitialiseAsync(); // uruchamia się na starcie
+            _ = pointsVm.InitialiseAsync();
         }
     }
 }

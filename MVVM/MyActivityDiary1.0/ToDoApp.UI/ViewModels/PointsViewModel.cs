@@ -12,9 +12,6 @@ using static ToDoApp.Core.Models.TaskItem;
 
 namespace ToDoApp.UI.ViewModels;
 
-/// <summary>
-///  Liczy punkty i zapisuje historię do bazy.
-/// </summary>
 public class PointsViewModel : INotifyPropertyChanged
 {
     private readonly ObservableCollection<TaskItem> _finishedTasks;
@@ -27,7 +24,7 @@ public class PointsViewModel : INotifyPropertyChanged
         _pointsRepo = pointsRepo;
 
         _finishedTasks.CollectionChanged += FinishedTasks_CollectionChanged;
-        _ = InitialiseAsync(); // domyślne wyliczenie na starcie
+        _ = InitialiseAsync();
     }
 
     #region Właściwości

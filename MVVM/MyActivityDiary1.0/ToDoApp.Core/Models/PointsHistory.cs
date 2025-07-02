@@ -8,9 +8,9 @@ namespace ToDoApp.Core.Models
 {
     public class PointsHistory
     {
-        public int Id { get; set; }              // Unikalny identyfikator
-        public DateTime Date { get; set; }        // Data zdobycia punktów
-        public int Points { get; set; }           // Liczba zdobytych punktów
-        public int TaskItemId { get; set; }      // Id zadania, które wygenerowało punkty
+        public int Id { get; set; }   
+        public DateTime Date { get; set; }
+        public int Points { get; set; } 
+        public int TaskItemId { get; set; }
     }
 }

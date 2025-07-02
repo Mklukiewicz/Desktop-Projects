@@ -10,7 +10,7 @@ namespace ToDoApp.Core.Models
 {
     public class CalendarDay: INotifyPropertyChanged
     {
-        public int Id { get; set; } // wymagany klucz główny
+        public int Id { get; set; }
 
         private ObservableCollection<TaskItem> _tasks = new();
 

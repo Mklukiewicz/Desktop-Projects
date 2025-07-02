@@ -537,7 +537,6 @@ namespace ToDoApp.UI.ViewModels
                     task.RemainingTime = window.SelectedTime;
                     task.ShowTimer = true;
 
-                    // 🛠️ Zapisujemy nowy czas do bazy
                     var dbModel = task.ToDb();
                     await _repository.UpdateAsync(dbModel);
 
@@ -566,7 +565,7 @@ namespace ToDoApp.UI.ViewModels
                 }
 
                 var dbItem = task.ToDb();
-                _ = _repository.UpdateAsync(dbItem); // opcjonalnie zapis końcowy
+                _ = _repository.UpdateAsync(dbItem);
             }
             else
             {
