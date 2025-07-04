@@ -20,6 +20,8 @@ namespace ToDoApp.DB.Models
         public DateTime? FinishDate { get; set; }
         public bool IsCompleted { get; set; }
         public bool IsFinished { get; set; }
+
+        public bool IsPointsGranted { get; set; }
         public bool TaskProgress { get; set; }
         public int ProgressMaxInt { get; set; }
         public int ProgressCurrentInt { get; set; }

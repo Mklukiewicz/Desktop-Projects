@@ -361,16 +361,11 @@ namespace ToDoApp.UI.ViewModels
             if (parameter is not TaskItem task)
                 return;
 
+            if (task.IsFinished && task.IsPointsGranted)
+                return;
+
             task.IsFinished = true;
             task.FinishDate ??= DateTime.UtcNow;
-
-            var dbModel = task.ToDb();             
-            if (dbModel.Id == 0)
-                await _repository.AddAsync(dbModel);
-            else
-                await _repository.UpdateAsync(dbModel);
-
-            task.Id = dbModel.Id;               
 
             int pts = task.Priority switch
             {
@@ -382,13 +377,26 @@ namespace ToDoApp.UI.ViewModels
                 _ => 0
             };
 
-            var historyEntry = new PointsHistoryDbModel
+            if (!task.IsPointsGranted)
             {
-                TaskItemId = task.Id,
-                Date = DateTime.UtcNow,
-                Points = pts
-            };
-            await _pointsHistoryRepository.AddAsync(historyEntry);
+                var historyEntry = new PointsHistoryDbModel
+                {
+                    TaskItemId = task.Id,
+                    Date = DateTime.UtcNow,
+                    Points = pts
+                };
+
+                await _pointsHistoryRepository.AddAsync(historyEntry);
+                task.IsPointsGranted = true;
+            }
+
+            var dbModel = task.ToDb();
+            if (dbModel.Id == 0)
+                await _repository.AddAsync(dbModel);
+            else
+                await _repository.UpdateAsync(dbModel);
+
+            task.Id = dbModel.Id;
 
             if (!FinishedTaskItems.Contains(task))
                 FinishedTaskItems.Add(task);
@@ -410,7 +418,6 @@ namespace ToDoApp.UI.ViewModels
             foreach (var db in ongoingDbItems)
             {
                 var domain = TaskItemMapper.ToDomain(db);
-                // Jeśli pozostało więcej niż 0 i zadanie nie jest zakończone → pokaż timer
                 if (domain.RemainingTime > TimeSpan.Zero && !domain.IsFinished)
                 {
                     domain.ShowTimer = true;

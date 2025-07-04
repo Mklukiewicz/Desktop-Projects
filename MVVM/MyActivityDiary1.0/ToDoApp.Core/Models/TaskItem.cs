@@ -79,6 +79,7 @@ namespace ToDoApp.Core.Models
                 OnPropertyChanged(nameof(IsTimerRunning));
             }
         }
+        public bool IsPointsGranted { get; set; }
         public TaskPriority Priority
         {
             get => _priority;

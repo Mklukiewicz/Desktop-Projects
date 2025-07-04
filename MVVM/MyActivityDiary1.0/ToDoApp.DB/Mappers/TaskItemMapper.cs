@@ -26,6 +26,7 @@ namespace ToDoApp.DB.Mappers
             ProgressString = src.ProgressString,
             Priority = src.Priority,
             RemainingTime = src.RemainingTime,
+            IsPointsGranted = src.IsPointsGranted,
         };
 
         public static TaskItem ToDomain(this TaskItemDbModel db) => new(
@@ -42,6 +43,7 @@ namespace ToDoApp.DB.Mappers
             ProgressCurrentInt = db.ProgressCurrentInt,
             ProgressString = db.ProgressString,
             RemainingTime = db.RemainingTime ?? TimeSpan.Zero,
+            IsPointsGranted = db.IsPointsGranted
         };
     }
 }

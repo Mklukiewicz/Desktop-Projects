@@ -83,46 +83,10 @@ public class PointsViewModel : INotifyPropertyChanged
 
     #region Zdarzenia kolekcji
 
-    private async void FinishedTasks_CollectionChanged(object? sender,
-                                                       NotifyCollectionChangedEventArgs e)
+    private void FinishedTasks_CollectionChanged(object? sender,
+                                                 NotifyCollectionChangedEventArgs e)
     {
-        if (e.Action == NotifyCollectionChangedAction.Add)
-        {
-            foreach (TaskItem t in e.NewItems!)
-            {
-                if (t.IsFinished)
-                    await SavePointsForTaskAsync(t);
-            }
-        }
-
         Recalculate(_finishedTasks);
-    }
-
-    #endregion
-
-    #region Zapis historii punktów
-
-    private async Task SavePointsForTaskAsync(TaskItem task)
-    {
-        int pts = task.Priority switch
-        {
-            TaskPriority.Low => 1,
-            TaskPriority.BelowNormal => 2,
-            TaskPriority.Normal => 3,
-            TaskPriority.AboveNormal => 4,
-            TaskPriority.High => 5,
-            _ => 0
-        };
-
-        var domain = new PointsHistory
-        {
-            Date = DateTime.UtcNow,
-            Points = pts,
-            TaskItemId = task.Id
-        };
-
-        var dbModel = PointsHistoryMapper.ToDb(domain);
-        await _pointsRepo.AddAsync(dbModel);
     }
 
     #endregion

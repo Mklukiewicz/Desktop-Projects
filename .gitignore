@@ -8,3 +8,4 @@
 # Build artifacts
 bin/
 obj/
+/MVVM/MyActivityDiary1.0/ToDoApp.UI/publish
